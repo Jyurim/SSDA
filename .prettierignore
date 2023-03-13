@@ -1,0 +1,5 @@
+next-env.d.ts
+node_modules
+next.config.js
+package-lock.json
+public
