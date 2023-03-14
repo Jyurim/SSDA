@@ -19,8 +19,14 @@ const Navbar = () => {
               </Link>
             </div>
             <div className="hidden items-center space-x-1 md:flex">
-              <Link href="features" className="py-5 px-3 text-gray-700 hover:text-gray-900">
-                Features
+              <Link href="demo" className="py-5 px-3 text-gray-700 hover:text-gray-900">
+                Demo
+              </Link>
+              <Link href="board" className="py-5 px-3 text-gray-700 hover:text-gray-900">
+                Board
+              </Link>
+              <Link href="contact" className="py-5 px-3 text-gray-700 hover:text-gray-900">
+                Contact
               </Link>
             </div>
           </div>
@@ -28,13 +34,13 @@ const Navbar = () => {
           {/* 메뉴2 */}
           <div className="hidden items-center space-x-1 md:flex">
             <Link
-              href="#"
-              className="text-white-900 rounded bg-blue-400 py-2 px-3 transition duration-300 hover:bg-yellow-300 hover:text-yellow-800"
+              href="login"
+              className="text-white-900 rounded bg-white py-2 px-3 transition duration-300 hover:bg-yellow-300 hover:text-yellow-800"
             >
               Login
             </Link>
             <Link
-              href="#"
+              href="signup"
               className="rounded bg-yellow-400 py-2 px-3 text-yellow-900 transition duration-300 hover:bg-yellow-300 hover:text-yellow-800"
             >
               Signup
@@ -84,7 +90,13 @@ const Navbar = () => {
       {/* <div className={classNames("md:hidden", { hidden: !menuToggle })}> */}
       <div className={!menuToggle ? "md:hidden" : ""}>
         <Link href="#" className="block py-2 px-4 text-sm hover:bg-gray-200">
-          Features
+          Demo
+        </Link>
+        <Link href="#" className="block py-2 px-4 text-sm hover:bg-gray-200">
+          Board
+        </Link>
+        <Link href="#" className="block py-2 px-4 text-sm hover:bg-gray-200">
+          Contact
         </Link>
       </div>
     </nav>
