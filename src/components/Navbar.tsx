@@ -25,8 +25,8 @@ const Navbar = () => {
               <Link href="board" className="text-gray-700 hover:text-gray-900 py-5 px-3">
                 Board
               </Link>
-              <Link href="contact" className="text-gray-700 hover:text-gray-900 py-5 px-3">
-                Contact
+              <Link href="info" className="text-gray-700 hover:text-gray-900 py-5 px-3">
+                Info
               </Link>
             </div>
           </div>
@@ -89,14 +89,14 @@ const Navbar = () => {
       {/* mobile menu items */}
       {/* <div className={classNames("md:hidden", { hidden: !menuToggle })}> */}
       <div className={!menuToggle ? "md:hidden" : ""}>
-        <Link href="#" className="hover:bg-gray-200 block py-2 px-4 text-sm">
+        <Link href="demo" className="block py-2 px-4 text-sm hover:bg-gray-200">
           Demo
         </Link>
-        <Link href="#" className="hover:bg-gray-200 block py-2 px-4 text-sm">
+        <Link href="board" className="block py-2 px-4 text-sm hover:bg-gray-200">
           Board
         </Link>
-        <Link href="#" className="hover:bg-gray-200 block py-2 px-4 text-sm">
-          Contact
+        <Link href="info" className="block py-2 px-4 text-sm hover:bg-gray-200">
+          Info
         </Link>
       </div>
     </nav>
