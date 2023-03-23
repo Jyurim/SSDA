@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
-import { Formik } from "formik";
-import * as Yup from "yup";
 import Image from "next/image";
 import logo from "../../public/logo.png";
+import { Formik } from "formik";
+import * as Yup from "yup";
 
 const SignupSchema = Yup.object().shape({
   username: Yup.string().required("필수 정보입니다."),
@@ -16,11 +15,8 @@ const SignupSchema = Yup.object().shape({
 const Singup = () => {
   return (
     <section className="h-screen">
-      <div className="h-1/2">
-        <div
-          className="g-6 flex h-full flex-wrap items-center justify-center"
-          style={{ margin: "50px auto" }}
-        >
+      <div className="container flex flex-col justify-center px-4 py-5 md:container md:mx-auto">
+        <div className="g-6 flex h-full flex-wrap items-center justify-center">
           <div className="shrink-1 mb-12 grow-0 basis-auto md:mb-0 md:w-9/12 md:shrink-0 lg:w-6/12 xl:w-6/12">
             <Image src={logo} alt="" className="w-1/2" style={{ margin: "0 auto" }} />
           </div>
@@ -40,11 +36,13 @@ const Singup = () => {
               onSubmit={values => {
                 // same shape as initial values
                 console.log(values);
+                alert("회원가입이 완료되었습니다.\n로그인 페이지로 이동합니다.");
+                window.location.href = "/login";
               }}
             >
               {formik => (
                 <form onSubmit={formik.handleSubmit}>
-                  <div className="relative mb-6" data-te-input-wrapper-init>
+                  <div className="relative mb-6">
                     <label className="block">
                       <span className="text-slate-700  block text-sm font-medium after:ml-0.5 after:text-red-500 after:content-['*']">
                         닉네임
@@ -60,7 +58,7 @@ const Singup = () => {
                       ) : null}
                     </label>
                   </div>
-                  <div className="relative mb-6" data-te-input-wrapper-init>
+                  <div className="relative mb-6">
                     <label className="block">
                       <span className="text-slate-700 block text-sm font-medium after:ml-0.5 after:text-red-500 after:content-['*']">
                         이메일
@@ -78,7 +76,7 @@ const Singup = () => {
                     </label>
                   </div>
 
-                  <div className="relative mb-6" data-te-input-wrapper-init>
+                  <div className="relative mb-6">
                     <label className="block">
                       <span className="text-slate-700 block text-sm font-medium after:ml-0.5 after:text-red-500 after:content-['*']">
                         비밀번호
@@ -94,7 +92,7 @@ const Singup = () => {
                       ) : null}
                     </label>
                   </div>
-                  <div className="relative mb-6" data-te-input-wrapper-init>
+                  <div className="relative mb-6">
                     <label className="block">
                       <span className="text-slate-700 block text-sm font-medium after:ml-0.5 after:text-red-500 after:content-['*']">
                         비밀번호 재확인
@@ -114,8 +112,6 @@ const Singup = () => {
                     <button
                       type="submit"
                       className="hover:bg-blue-600-600 focus:bg-blue-600-600 active:bg-blue-600-700 inline-block rounded bg-blue-600 px-7 pt-3 pb-2.5 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]"
-                      data-te-ripple-init
-                      data-te-ripple-color="light"
                     >
                       sign up
                     </button>
