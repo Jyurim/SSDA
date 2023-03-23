@@ -4,7 +4,7 @@ const Footer = () => {
       <span className="text-sm text-gray-500 dark:text-gray-400 sm:text-center">
         © 2023{" "}
         <a href="https://flowbite.com/" className="hover:underline">
-          Flowbite™
+          SSDA™
         </a>
         . All Rights Reserved.
       </span>

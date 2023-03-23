@@ -7,7 +7,9 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Navbar />
-      <Component {...pageProps} />
+      <div className="bg-gray-50">
+        <Component {...pageProps} />
+      </div>
       <Footer />
     </>
   );
