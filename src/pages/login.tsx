@@ -39,12 +39,12 @@ const Login = () => {
                             <input
                               type="email"
                               id="email"
-                              className="... dark:text-neutral-200 dark:placeholder:text-neutral-200 peer peer block min-h-[auto] w-full rounded border-0 bg-transparent py-[0.32rem] px-3 leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                              className="... dark:text-neutral-200 dark:placeholder:text-neutral-200 peer peer block min-h-[auto] w-full rounded border bg-transparent py-[0.32rem] px-3 leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                               placeholder="Email address"
                               {...formik.getFieldProps("email")}
                             />
                             <label
-                              className="absolute -top-3 text-sm text-gray-500 transition-all peer-placeholder-shown:top-2 peer-placeholder-shown:-mt-1 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-blue-600"
+                              className="absolute -top-3 left-2 text-sm text-gray-500 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:-mt-1 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-blue-600"
                               htmlFor="email"
                             >
                               Email address
@@ -58,13 +58,13 @@ const Login = () => {
                             <input
                               type="password"
                               id="password"
-                              className="dark:text-neutral-200 dark:placeholder:text-neutral-200 peer block min-h-[auto] w-full rounded border-0 bg-transparent py-[0.32rem] px-3 leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                              className="dark:text-neutral-200 dark:placeholder:text-neutral-200 peer block min-h-[auto] w-full rounded border bg-transparent py-[0.32rem] px-3 leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                               placeholder="Password"
                               {...formik.getFieldProps("password")}
                             />
                             <label
                               // className="pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-blue-600 peer-data-[te-input-state-active]:-translate-y-[1.15rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-neutral-200"
-                              className="absolute -top-3 text-sm text-gray-500 transition-all peer-placeholder-shown:top-2 peer-placeholder-shown:-mt-1 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-blue-600"
+                              className="absolute -top-3 left-2 text-sm text-gray-500 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:-mt-1 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-blue-600"
                               htmlFor="password"
                             >
                               Password
