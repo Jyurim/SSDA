@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const Menu = () => {
   return (
     <aside
@@ -8,7 +10,7 @@ const Menu = () => {
       <div className="dark:bg-gray-800 h-full overflow-y-auto bg-white px-3 py-4">
         <ul className="space-y-2 font-medium">
           <li>
-            <a
+            <Link
               href="/mypage"
               className="text-gray-900 dark:hover:bg-gray-700 flex items-center rounded-lg p-2 hover:bg-gray-100 dark:text-white"
             >
@@ -23,10 +25,10 @@ const Menu = () => {
                 <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
               </svg>
               <span className="ml-3">Dashboard</span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a
+            <Link
               href="/mypage/userCheck"
               className="text-gray-900 dark:hover:bg-gray-700 flex items-center rounded-lg p-2 hover:bg-gray-100 dark:text-white"
             >
@@ -44,10 +46,10 @@ const Menu = () => {
                 ></path>
               </svg>
               <span className="ml-3 flex-1 whitespace-nowrap">계정</span>
-            </a>
+            </Link>
           </li>
           {/* <li>
-              <a
+              <Link
                 href="/mypage/favorites"
                 className="text-gray-900 dark:hover:bg-gray-700 flex items-center rounded-lg p-2 hover:bg-gray-100 dark:text-white"
               >
@@ -64,11 +66,11 @@ const Menu = () => {
                 <span className="ml-3 inline-flex h-3 w-3 items-center justify-center rounded-full bg-blue-100 p-3 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-300">
                   3
                 </span>
-              </a>
+              </Link>
             </li> */}
           <li>
-            <a
-              href="/userCheck"
+            <Link
+              href="/mypage/userCheck"
               className="text-gray-900 dark:hover:bg-gray-700 flex items-center rounded-lg p-2 hover:bg-gray-100 dark:text-white"
             >
               <svg
@@ -85,7 +87,7 @@ const Menu = () => {
                 ></path>
               </svg>
               <span className="ml-3 flex-1 whitespace-nowrap">회원탈퇴</span>
-            </a>
+            </Link>
           </li>
         </ul>
       </div>
