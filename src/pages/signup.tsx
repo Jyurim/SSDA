@@ -3,6 +3,13 @@ import logo from "../../public/logo.png";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
+interface ISignupForm {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
 const SignupSchema = Yup.object().shape({
   username: Yup.string().required("필수 정보입니다."),
   email: Yup.string().email("이메일 형태가 아닙니다.").required("필수 정보입니다."),
@@ -13,12 +20,37 @@ const SignupSchema = Yup.object().shape({
 });
 
 const Singup = () => {
+  const SignupForm: ISignupForm = {
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  };
+
+  const handleSubmit = (values: ISignupForm) => {
+    const { username, email, password } = values;
+    fetch("/user/join", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password, email }),
+    }).then(data => {
+      if (data.status === 200) {
+        alert("회원가입이 완료되었습니다.\n로그인 페이지로 이동합니다.");
+        window.location.href = "/login";
+      } else {
+        alert("회원가입에 실패했습니다.");
+      }
+    });
+  };
+
   return (
-    <section className="gradient-form bg-neutral-200 dark:bg-neutral-700 h-full">
+    <section className="gradient-form h-full bg-neutral-200 dark:bg-neutral-700">
       <div className="container flex h-full flex-col justify-center px-4 py-5 md:container md:mx-auto">
-        <div className="g-6 text-neutral-800 dark:text-neutral-200 flex h-full flex-wrap items-center justify-center">
+        <div className="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
           <div className="w-full">
-            <div className="dark:bg-neutral-800 block rounded-lg bg-white shadow-lg">
+            <div className="block rounded-lg bg-white shadow-lg dark:bg-neutral-800">
               <div className="g-0 lg:flex lg:flex-wrap">
                 <div className="flex items-center justify-center rounded-b-lg lg:w-6/12 lg:rounded-r-lg lg:rounded-bl-none">
                   <Image src={logo} alt="" />
@@ -26,31 +58,21 @@ const Singup = () => {
                 <div className="px-4 md:px-0 lg:w-6/12">
                   <div className="md:mx-6 md:p-12">
                     <Formik
-                      initialValues={{
-                        username: "",
-                        email: "",
-                        password: "",
-                        confirmPassword: "",
-                      }}
+                      initialValues={SignupForm}
                       validationSchema={SignupSchema}
-                      onSubmit={values => {
-                        // same shape as initial values
-                        console.log(values);
-                        alert("회원가입이 완료되었습니다.\n로그인 페이지로 이동합니다.");
-                        window.location.href = "/login";
-                      }}
+                      onSubmit={handleSubmit}
                     >
                       {formik => (
                         <form onSubmit={formik.handleSubmit}>
                           <div className="relative mb-6">
                             <label className="block">
-                              <span className="text-slate-700  block text-sm font-medium after:ml-0.5 after:text-red-500 after:content-['*']">
+                              <span className="block  text-sm font-medium text-slate-700 after:ml-0.5 after:text-red-500 after:content-['*']">
                                 닉네임
                               </span>
                               <input
                                 type="text"
                                 id="username"
-                                className="border-slate-300 placeholder-slate-400 focus:border-sky-500 focus:ring-sky-500 mt-1 block w-full rounded-md border bg-white px-3 py-2 shadow-sm focus:outline-none focus:ring-1 sm:text-sm"
+                                className="mt-1 block w-full rounded-md border border-slate-300 bg-white px-3 py-2 placeholder-slate-400 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 sm:text-sm"
                                 {...formik.getFieldProps("username")}
                               />
                               {formik.touched.username && formik.errors.username ? (
@@ -60,13 +82,13 @@ const Singup = () => {
                           </div>
                           <div className="relative mb-6">
                             <label className="block">
-                              <span className="text-slate-700 block text-sm font-medium after:ml-0.5 after:text-red-500 after:content-['*']">
+                              <span className="block text-sm font-medium text-slate-700 after:ml-0.5 after:text-red-500 after:content-['*']">
                                 이메일
                               </span>
                               <input
                                 type="email"
                                 id="email"
-                                className="border-slate-300 placeholder-slate-400 focus:border-sky-500 focus:ring-sky-500 mt-1 block w-full rounded-md border bg-white px-3 py-2 shadow-sm focus:outline-none focus:ring-1 sm:text-sm"
+                                className="mt-1 block w-full rounded-md border border-slate-300 bg-white px-3 py-2 placeholder-slate-400 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 sm:text-sm"
                                 placeholder="you@example.com"
                                 {...formik.getFieldProps("email")}
                               />
@@ -78,13 +100,13 @@ const Singup = () => {
 
                           <div className="relative mb-6">
                             <label className="block">
-                              <span className="text-slate-700 block text-sm font-medium after:ml-0.5 after:text-red-500 after:content-['*']">
+                              <span className="block text-sm font-medium text-slate-700 after:ml-0.5 after:text-red-500 after:content-['*']">
                                 비밀번호
                               </span>
                               <input
                                 type="password"
                                 id="password"
-                                className="border-slate-300 placeholder-slate-400 focus:border-sky-500 focus:ring-sky-500 mt-1 block w-full rounded-md border bg-white px-3 py-2 shadow-sm focus:outline-none focus:ring-1 sm:text-sm"
+                                className="mt-1 block w-full rounded-md border border-slate-300 bg-white px-3 py-2 placeholder-slate-400 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 sm:text-sm"
                                 {...formik.getFieldProps("password")}
                               />
                               {formik.touched.password && formik.errors.password ? (
@@ -94,13 +116,13 @@ const Singup = () => {
                           </div>
                           <div className="relative mb-6">
                             <label className="block">
-                              <span className="text-slate-700 block text-sm font-medium after:ml-0.5 after:text-red-500 after:content-['*']">
+                              <span className="block text-sm font-medium text-slate-700 after:ml-0.5 after:text-red-500 after:content-['*']">
                                 비밀번호 재확인
                               </span>
                               <input
                                 type="password"
                                 id="confirmPassword"
-                                className="border-slate-300 placeholder-slate-400 focus:border-sky-500 focus:ring-sky-500 mt-1 block w-full rounded-md border bg-white px-3 py-2 shadow-sm focus:outline-none focus:ring-1 sm:text-sm"
+                                className="mt-1 block w-full rounded-md border border-slate-300 bg-white px-3 py-2 placeholder-slate-400 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 sm:text-sm"
                                 {...formik.getFieldProps("confirmPassword")}
                               />
                               {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
