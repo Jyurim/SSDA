@@ -7,25 +7,25 @@ const Navbar = () => {
   const [menuToggle, setMenuToggle] = useState(false);
 
   return (
-    <nav className="bg-neutral-100">
+    <nav className="bg-white">
       <div className="mx-auto px-4">
         <div className="flex justify-between">
           {/* 메뉴 */}
           <div className="flex space-x-4">
             <div>
-              <Link href="/" className="text-gray-700 flex items-center px-2">
+              <Link href="/" className="flex items-center px-2 text-gray-700">
                 <Image src={logo} alt="" width={100} />
                 <span className="pl-4 font-bold">Home</span>
               </Link>
             </div>
             <div className="hidden items-center space-x-1 md:flex">
-              <Link href="demo" className="text-gray-700 hover:text-gray-900 py-5 px-3">
+              <Link href="demo" className="py-5 px-3 text-gray-700 hover:text-gray-900">
                 Demo
               </Link>
-              <Link href="board" className="text-gray-700 hover:text-gray-900 py-5 px-3">
+              <Link href="board" className="py-5 px-3 text-gray-700 hover:text-gray-900">
                 Board
               </Link>
-              <Link href="info" className="text-gray-700 hover:text-gray-900 py-5 px-3">
+              <Link href="info" className="py-5 px-3 text-gray-700 hover:text-gray-900">
                 Info
               </Link>
             </div>
@@ -35,13 +35,13 @@ const Navbar = () => {
           <div className="hidden items-center space-x-1 md:flex">
             <Link
               href="login"
-              className="text-white-900 hover:bg-yellow-300 hover:text-yellow-800 rounded bg-white py-2 px-3 transition duration-300"
+              className="text-white-900 rounded bg-white py-2 px-3 transition duration-300 hover:bg-yellow-300 hover:text-yellow-800"
             >
               Login
             </Link>
             <Link
               href="signup"
-              className="bg-yellow-400 text-yellow-900 hover:bg-yellow-300 hover:text-yellow-800 rounded py-2 px-3 transition duration-300"
+              className="rounded bg-yellow-400 py-2 px-3 text-yellow-900 transition duration-300 hover:bg-yellow-300 hover:text-yellow-800"
             >
               Signup
             </Link>
