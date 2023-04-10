@@ -41,7 +41,7 @@ const info = () => {
 
   return (
     <section className="h-screens">
-      <div className=" container flex flex-col justify-center px-4 py-5 md:container md:mx-auto">
+      <div className="container flex flex-col justify-center px-4 py-5 md:container md:mx-auto">
         <div className="text-center">
           <h1 className="text-4xl font-bold">Our Team</h1>
           <p className="my-4 py-2 text-xl">
