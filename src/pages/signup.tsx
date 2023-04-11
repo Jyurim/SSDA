@@ -2,7 +2,7 @@ import Image from "next/image";
 import logo from "../../public/logo.png";
 import { Formik } from "formik";
 import * as Yup from "yup";
-
+import { userClient } from "@/api/userClient";
 interface ISignupForm {
   username: string;
   email: string;
@@ -27,22 +27,20 @@ const Singup = () => {
     confirmPassword: "",
   };
 
-  const handleSubmit = (values: ISignupForm) => {
-    const { username, email, password } = values;
-    fetch("/user/join", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password, email }),
-    }).then(data => {
-      if (data.status === 200) {
-        alert("회원가입이 완료되었습니다.\n로그인 페이지로 이동합니다.");
+  const handleSubmit = async (values: ISignupForm) => {
+    await userClient
+      .post("/join", {
+        username: values.username,
+        email: values.email,
+        password: values.password,
+      })
+      .then(res => {
+        res.status === 200 && alert("회원가입이 완료되었습니다.");
         window.location.href = "/login";
-      } else {
-        alert("회원가입에 실패했습니다.");
-      }
-    });
+      })
+      .catch(err => {
+        console.log("오류가 발생하였습니다.\n" + err);
+      });
   };
 
   return (
