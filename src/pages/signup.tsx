@@ -2,6 +2,13 @@ import Image from "next/image";
 import logo from "../../public/logo.png";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { userClient } from "@/api/userClient";
+interface ISignupForm {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
 
 const SignupSchema = Yup.object().shape({
   username: Yup.string().required("필수 정보입니다."),
@@ -13,6 +20,29 @@ const SignupSchema = Yup.object().shape({
 });
 
 const Singup = () => {
+  const SignupForm: ISignupForm = {
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  };
+
+  const handleSubmit = async (values: ISignupForm) => {
+    await userClient
+      .post("/join", {
+        username: values.username,
+        email: values.email,
+        password: values.password,
+      })
+      .then(res => {
+        res.status === 200 && alert("회원가입이 완료되었습니다.");
+        window.location.href = "/login";
+      })
+      .catch(err => {
+        console.log("오류가 발생하였습니다.\n" + err);
+      });
+  };
+
   return (
     <div className="g-6 container flex h-full flex-wrap items-center justify-center px-4 py-5 text-neutral-800 md:container dark:text-neutral-200 md:mx-auto">
       <div className="block w-full rounded-lg bg-white shadow-lg dark:bg-neutral-800">
@@ -23,19 +53,9 @@ const Singup = () => {
           <div className="px-4 md:px-0 lg:w-6/12">
             <div className="md:mx-6 md:p-12">
               <Formik
-                initialValues={{
-                  username: "",
-                  email: "",
-                  password: "",
-                  confirmPassword: "",
-                }}
+                initialValues={SignupForm}
                 validationSchema={SignupSchema}
-                onSubmit={values => {
-                  // same shape as initial values
-                  console.log(values);
-                  alert("회원가입이 완료되었습니다.\n로그인 페이지로 이동합니다.");
-                  window.location.href = "/login";
-                }}
+                onSubmit={handleSubmit}
               >
                 {formik => (
                   <form onSubmit={formik.handleSubmit}>
@@ -47,7 +67,7 @@ const Singup = () => {
                         <input
                           type="text"
                           id="username"
-                          className="mt-1 block w-full rounded-md border border-slate-300 bg-white px-3 py-2 placeholder-slate-400 shadow-sm focus:text-blue-600 focus:outline-none focus:ring-1 focus:ring-sky-500 sm:text-sm"
+                          className="mt-1 block w-full rounded-md border border-slate-300 bg-white px-3 py-2 placeholder-slate-400 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-sky-500 sm:text-sm"
                           {...formik.getFieldProps("username")}
                         />
                         {formik.touched.username && formik.errors.username ? (
@@ -63,7 +83,7 @@ const Singup = () => {
                         <input
                           type="email"
                           id="email"
-                          className="mt-1 block w-full rounded-md border border-slate-300 bg-white px-3 py-2 placeholder-slate-400 shadow-sm focus:text-blue-600 focus:outline-none focus:ring-1 focus:ring-sky-500 sm:text-sm"
+                          className="mt-1 block w-full rounded-md border border-slate-300 bg-white px-3 py-2 placeholder-slate-400 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-sky-500 sm:text-sm"
                           placeholder="you@example.com"
                           {...formik.getFieldProps("email")}
                         />
@@ -81,7 +101,7 @@ const Singup = () => {
                         <input
                           type="password"
                           id="password"
-                          className="mt-1 block w-full rounded-md border border-slate-300 bg-white px-3 py-2 placeholder-slate-400 shadow-sm focus:text-blue-600 focus:outline-none focus:ring-1 focus:ring-sky-500 sm:text-sm"
+                          className="mt-1 block w-full rounded-md border border-slate-300 bg-white px-3 py-2 placeholder-slate-400 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-sky-500 sm:text-sm"
                           {...formik.getFieldProps("password")}
                         />
                         {formik.touched.password && formik.errors.password ? (
@@ -97,7 +117,7 @@ const Singup = () => {
                         <input
                           type="password"
                           id="confirmPassword"
-                          className="mt-1 block w-full rounded-md border border-slate-300 bg-white px-3 py-2 placeholder-slate-400 shadow-sm focus:text-blue-600 focus:outline-none focus:ring-1 focus:ring-sky-500 sm:text-sm"
+                          className="mt-1 block w-full rounded-md border border-slate-300 bg-white px-3 py-2 placeholder-slate-400 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-sky-500 sm:text-sm"
                           {...formik.getFieldProps("confirmPassword")}
                         />
                         {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
@@ -110,7 +130,7 @@ const Singup = () => {
                     <div className="text-center lg:text-left">
                       <button
                         type="submit"
-                        className="focus:bg-blue-600-600 active:bg-blue-600-700 inline-block rounded bg-blue-600 px-7 pt-3 pb-2.5 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-blue-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]"
+                        className="hover:bg-blue-600-600 focus:bg-blue-600-600 active:bg-blue-600-700 inline-block rounded bg-blue-600 px-7 pt-3 pb-2.5 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]"
                       >
                         회원가입
                       </button>
