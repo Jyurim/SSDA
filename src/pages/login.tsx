@@ -83,10 +83,10 @@ const Login = () => {
                           className="inline-block pl-[0.15rem] hover:cursor-pointer"
                           htmlFor="remember"
                         >
-                          Remember me
+                          로그인 상태 유지
                         </label>
                       </div>
-                      <a href="reset">Forgot password?</a>
+                      <a href="reset">비밀번호 찾기</a>
                     </div>
 
                     <div className="text-center lg:text-left">
@@ -94,15 +94,15 @@ const Login = () => {
                         type="submit"
                         className="hover:bg-blue-600-600 focus:bg-blue-600-600 active:bg-blue-600-700 inline-block rounded bg-blue-600 px-7 pt-3 pb-2.5 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]"
                       >
-                        Login
+                        로그인
                       </button>
                       <p className="mt-2 mb-0 pt-1 text-sm font-semibold">
-                        Don&apos;t have an account?{" "}
+                        계정이 없으신가요?{" "}
                         <Link
                           href="signup"
                           className="text-red transition duration-150 ease-in-out hover:text-red-600 focus:text-red-600 active:text-red-700"
                         >
-                          Register
+                          회원가입
                         </Link>
                       </p>
                     </div>
