@@ -1,5 +1,7 @@
+"use client";
+
 import Image from "next/image";
-import logo from "../../public/logo.png";
+import logo from "../../../../public/logo.png";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { userClient } from "@/api/userClient";
@@ -36,7 +38,7 @@ const Singup = () => {
       })
       .then(res => {
         res.status === 200 && alert("회원가입이 완료되었습니다.");
-        window.location.href = "/login";
+        window.location.href = "/user/login";
       })
       .catch(err => {
         console.log("오류가 발생하였습니다.\n" + err);
