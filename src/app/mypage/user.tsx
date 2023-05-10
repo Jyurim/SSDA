@@ -1,3 +1,5 @@
+"use client";
+
 import Menu from "./Menu";
 import { Formik } from "formik";
 import * as Yup from "yup";
