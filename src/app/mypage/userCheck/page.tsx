@@ -1,5 +1,4 @@
 "use client";
-
 import Menu from "../Menu";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -16,21 +15,12 @@ const UserCheck = () => {
       </div>
       <div className="w-full">
         <div className=" px-3 py-4">
-<<<<<<< HEAD:src/pages/mypage/userCheck.tsx
           <section className="gradient-form h-full">
             <div className="container flex h-full flex-col justify-center px-4 py-5 md:container md:mx-auto">
               <div className="g-6 flex h-full flex-wrap text-neutral-800 dark:text-neutral-200">
                 <div className="w-7/12">
                   <div className="block rounded-lg bg-white shadow-lg dark:bg-neutral-800">
                     <div className="px-4 md:px-0 lg:w-10/12">
-=======
-          <section className="gradient-form h-full bg-neutral-200 dark:bg-neutral-700">
-            <div className="container flex h-full flex-col justify-center px-4 py-5 md:container md:mx-auto">
-              <div className="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
-                <div className="w-full">
-                  <div className="block rounded-lg bg-white shadow-lg dark:bg-neutral-800">
-                    <div className="px-4 md:px-0 lg:w-6/12">
->>>>>>> 4ecd201d16241678297277156b8d871b675ddf84:src/app/mypage/userCheck/page.tsx
                       <div className="md:mx-6 md:p-12">
                         <Formik
                           initialValues={{
@@ -48,11 +38,7 @@ const UserCheck = () => {
                                 <input
                                   type="password"
                                   id="password"
-<<<<<<< HEAD:src/pages/mypage/userCheck.tsx
                                   className="peer block min-h-[auto] w-full rounded border-slate-300 bg-transparent py-[0.32rem] px-3 leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-=======
-                                  className="peer block min-h-[auto] w-full rounded border bg-transparent py-[0.32rem] px-3 leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
->>>>>>> 4ecd201d16241678297277156b8d871b675ddf84:src/app/mypage/userCheck/page.tsx
                                   placeholder="Password"
                                   {...formik.getFieldProps("password")}
                                 />
