@@ -29,7 +29,7 @@ const Singup = () => {
 
   const handleSubmit = async (values: ISignupForm) => {
     await userClient
-      .post("/join", {
+      .post("/signup", {
         username: values.username,
         email: values.email,
         password: values.password,
@@ -62,7 +62,7 @@ const Singup = () => {
                     <div className="relative mb-6">
                       <label className="block">
                         <span className="block  text-sm font-medium text-slate-700 after:ml-0.5 after:text-red-500 after:content-['*']">
-                          닉네임
+                          아이디
                         </span>
                         <input
                           type="text"
