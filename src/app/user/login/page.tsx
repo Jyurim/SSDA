@@ -1,6 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
-import logo from "../../public/logo.png";
+import logo from "../../../../public/logo.png";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { userClient } from "@/api/userClient";

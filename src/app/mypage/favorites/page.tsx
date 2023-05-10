@@ -1,4 +1,5 @@
-import Menu from "./Menu";
+import Menu from "../Menu";
+import Image from "next/image";
 
 const favorites = () => {
   return (
@@ -14,10 +15,12 @@ const favorites = () => {
                 <div className="!z-5 shadow-3xl shadow-shadow-500 3xl:p-![18px] undefined relative flex w-full max-w-[300px] flex-col rounded-[20px] bg-white bg-clip-border !p-4">
                   <div className="h-full w-full">
                     <div className="relative w-full">
-                      <img
+                      <Image
                         src="https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png"
                         className="3xl:h-full 3xl:w-full mb-3 h-full w-full rounded-xl"
                         alt=""
+                        width={300}
+                        height={300}
                       />
                       <button className="text-brand-500 absolute top-3 right-3 flex items-center justify-center rounded-full bg-white p-2 hover:cursor-pointer">
                         <div className="flex h-full w-full items-center justify-center rounded-full text-xl hover:bg-gray-50">
@@ -64,10 +67,12 @@ const favorites = () => {
                 <div className="!z-5 shadow-3xl shadow-shadow-500 3xl:p-![18px] undefined relative flex w-full max-w-[300px] flex-col rounded-[20px] bg-white bg-clip-border !p-4">
                   <div className="h-full w-full">
                     <div className="relative w-full">
-                      <img
+                      <Image
                         src="https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png"
                         className="3xl:h-full 3xl:w-full mb-3 h-full w-full rounded-xl"
                         alt=""
+                        width={300}
+                        height={300}
                       />
                       <button className="text-brand-500 absolute top-3 right-3 flex items-center justify-center rounded-full bg-white p-2 hover:cursor-pointer">
                         <div className="flex h-full w-full items-center justify-center rounded-full text-xl hover:bg-gray-50">
@@ -114,10 +119,12 @@ const favorites = () => {
                 <div className="!z-5 shadow-3xl shadow-shadow-500 3xl:p-![18px] undefined relative flex w-full max-w-[300px] flex-col rounded-[20px] bg-white bg-clip-border !p-4">
                   <div className="h-full w-full">
                     <div className="relative w-full">
-                      <img
+                      <Image
                         src="https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png"
                         className="3xl:h-full 3xl:w-full mb-3 h-full w-full rounded-xl"
                         alt=""
+                        width={300}
+                        height={300}
                       />
                       <button className="text-brand-500 absolute top-3 right-3 flex items-center justify-center rounded-full bg-white p-2 hover:cursor-pointer">
                         <div className="flex h-full w-full items-center justify-center rounded-full text-xl hover:bg-gray-50">
