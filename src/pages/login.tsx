@@ -3,13 +3,38 @@ import Image from "next/image";
 import logo from "../../public/logo.png";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { userClient } from "@/api/userClient";
+
+interface ILoginForm {
+  username: string;
+  password: string;
+}
 
 const LoginSchema = Yup.object().shape({
-  email: Yup.string().email("이메일 형태가 아닙니다.").required("아이디를 입력해주세요."),
+  username: Yup.string().required("아이디를 입력해주세요."),
   password: Yup.string().required("비밀번호를 입력해주세요."),
 });
 
 const Login = () => {
+  const LoginForm: ILoginForm = {
+    username: "",
+    password: "",
+  };
+
+  const handleSubmit = async (values: ILoginForm) => {
+    await userClient
+      .post("/authenticate", {
+        username: values.username,
+        password: values.password,
+      })
+      .then(res => {
+        // window.location.href = "../";
+      })
+      .catch(err => {
+        console.log("오류가 발생하였습니다.\n" + err);
+      });
+  };
+
   return (
     <div className="g-6 container flex flex-wrap items-center justify-center px-4 py-5 text-neutral-800 md:container dark:text-neutral-200 md:mx-auto">
       <div className="block w-full rounded-lg bg-white shadow-lg dark:bg-neutral-800">
@@ -20,34 +45,28 @@ const Login = () => {
           <div className="px-4 md:px-0 lg:w-6/12">
             <div className="md:mx-6 md:p-12">
               <Formik
-                initialValues={{
-                  email: "",
-                  password: "",
-                }}
+                initialValues={LoginForm}
                 validationSchema={LoginSchema}
-                onSubmit={values => {
-                  // same shape as initial values
-                  console.log(values);
-                }}
+                onSubmit={handleSubmit}
               >
                 {formik => (
                   <form onSubmit={formik.handleSubmit}>
                     <div className="relative mb-6">
                       <input
-                        type="email"
-                        id="email"
+                        type="text"
+                        id="username"
                         className="... peer peer block min-h-[auto] w-full rounded border-inherit bg-transparent py-[0.32rem] px-3 leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                        placeholder="Email address"
-                        {...formik.getFieldProps("email")}
+                        placeholder="아이디"
+                        {...formik.getFieldProps("username")}
                       />
                       <label
                         className="absolute -top-3 left-2 text-sm text-gray-500 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:-mt-1 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-5 peer-focus:text-sm peer-focus:text-blue-600"
-                        htmlFor="email"
+                        htmlFor="username"
                       >
-                        Email address
+                        아이디
                       </label>
-                      {formik.touched.email && formik.errors.email ? (
-                        <div className="text-sm text-red-500">{formik.errors.email}</div>
+                      {formik.touched.username && formik.errors.username ? (
+                        <div className="text-sm text-red-500">{formik.errors.username}</div>
                       ) : null}
                     </div>
 
@@ -64,7 +83,7 @@ const Login = () => {
                         className="absolute -top-3 left-2 text-sm text-gray-500 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:-mt-1 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-5 peer-focus:text-sm peer-focus:text-blue-600"
                         htmlFor="password"
                       >
-                        Password
+                        비밀번호
                       </label>
                       {formik.touched.password && formik.errors.password ? (
                         <div className="text-sm text-red-500">{formik.errors.password}</div>
