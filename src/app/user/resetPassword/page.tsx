@@ -1,3 +1,5 @@
+"use client";
+
 import { Formik } from "formik";
 import * as Yup from "yup";
 
@@ -32,20 +34,20 @@ const ResetPassword = () => {
                 // same shape as initial values
                 console.log(values);
                 alert("회원가입이 완료되었습니다.\n로그인 페이지로 이동합니다.");
-                window.location.href = "/login";
+                window.location.href = "/user/login";
               }}
             >
               {formik => (
                 <form onSubmit={formik.handleSubmit}>
                   <div className="relative mb-6">
                     <label className="block">
-                      <span className="text-slate-700 block text-sm font-medium after:ml-0.5 after:text-red-500 after:content-['*']">
+                      <span className="block text-sm font-medium text-slate-700 after:ml-0.5 after:text-red-500 after:content-['*']">
                         비밀번호
                       </span>
                       <input
                         type="password"
                         id="password"
-                        className="border-slate-300 placeholder-slate-400 focus:border-sky-500 focus:ring-sky-500 mt-1 block w-full rounded-md border bg-white px-3 py-2 shadow-sm focus:outline-none focus:ring-1 sm:text-sm"
+                        className="mt-1 block w-full rounded-md border border-slate-300 bg-white px-3 py-2 placeholder-slate-400 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 sm:text-sm"
                         {...formik.getFieldProps("password")}
                       />
                       {formik.touched.password && formik.errors.password ? (
@@ -55,13 +57,13 @@ const ResetPassword = () => {
                   </div>
                   <div className="relative mb-6">
                     <label className="block">
-                      <span className="text-slate-700 block text-sm font-medium after:ml-0.5 after:text-red-500 after:content-['*']">
+                      <span className="block text-sm font-medium text-slate-700 after:ml-0.5 after:text-red-500 after:content-['*']">
                         비밀번호 재확인
                       </span>
                       <input
                         type="password"
                         id="confirmPassword"
-                        className="border-slate-300 placeholder-slate-400 focus:border-sky-500 focus:ring-sky-500 mt-1 block w-full rounded-md border bg-white px-3 py-2 shadow-sm focus:outline-none focus:ring-1 sm:text-sm"
+                        className="mt-1 block w-full rounded-md border border-slate-300 bg-white px-3 py-2 placeholder-slate-400 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 sm:text-sm"
                         {...formik.getFieldProps("confirmPassword")}
                       />
                       {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
