@@ -1,18 +1,20 @@
 "use client";
 
 import { useState, useRef, FunctionComponent } from "react";
-import { Stage, Layer, Text, Line } from "react-konva";
-
+import { Stage, Layer, Line, Rect, Text } from "react-konva";
+import Konva from "konva";
+import axios from "axios";
 interface ILine {
   tool: string;
   points: number[];
 }
 
-const Konva: FunctionComponent = () => {
+const KonvaComponent: FunctionComponent = () => {
   const [tool, setTool] = useState("pen");
   const [lines, setLines] = useState([] as ILine[]);
   const [history, setHistory] = useState([] as ILine[]);
   const isDrawing = useRef(false);
+  const stageRef = useRef<Konva.Stage>(null);
 
   const handleMouseDown = e => {
     isDrawing.current = true;
@@ -61,17 +63,48 @@ const Konva: FunctionComponent = () => {
     setLines([...lines, history[history.length - 1]]);
   };
 
+  const handleDownload = async () => {
+    const dataURL = stageRef?.current?.toDataURL();
+    // axios header에 token 추가
+    const token = localStorage.getItem("token");
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    await axios.post("/api/make/draw", { imageBase64: dataURL, fontName: "NanumSquareRound" });
+  };
+
+  const box = (width: number, height: number) => {
+    const gridSize = width / 7;
+    const result = [];
+    for (let i = 0; i < 6; i++) {
+      for (let j = 0; j < 5; j++) {
+        result.push(
+          <Rect
+            key={i * 7 + j}
+            x={i * gridSize}
+            y={j * gridSize}
+            width={gridSize}
+            height={gridSize}
+            stroke={"black"}
+            strokeWidth={3}
+          />,
+        );
+      }
+    }
+    return result;
+  };
+
   return (
-    <div className="bg-[url('../../../../public/Test.png')]">
+    <div className="p-15 flex w-screen flex-col items-center justify-center">
       <Stage
-        width={window.innerWidth}
-        height={window.innerHeight}
+        width={stageRef?.current?.container().clientWidth || window.innerWidth - 200}
+        height={stageRef?.current?.container().clientHeight || window.innerHeight}
         onMouseDown={handleMouseDown}
         onMousemove={handleMouseMove}
         onMouseup={handleMouseUp}
+        ref={stageRef}
+        className="flex items-center justify-center"
       >
         <Layer>
-          <Text text="Just start drawing" x={5} y={30} />
+          {box(window.innerWidth, window.innerHeight)}
           {lines.map((line, i) => (
             <Line
               key={i}
@@ -93,8 +126,9 @@ const Konva: FunctionComponent = () => {
       <button onClick={() => setLines([])}>Reset</button>
       <button onClick={handleUndo}>Undo</button>
       <button onClick={handleRedo}>Redo</button>
+      <button onClick={handleDownload}>Save</button>
     </div>
   );
 };
 
-export default Konva;
+export default KonvaComponent;

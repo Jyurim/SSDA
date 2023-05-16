@@ -1,4 +1,5 @@
 "use client";
+
 import dynamic from "next/dynamic";
 
 const NoSSRComponent = dynamic(() => import("./Konva"), {
@@ -6,5 +7,9 @@ const NoSSRComponent = dynamic(() => import("./Konva"), {
 });
 
 export default function TestsPage() {
-  return <NoSSRComponent />;
+  return (
+    <section>
+      <NoSSRComponent />
+    </section>
+  );
 }
