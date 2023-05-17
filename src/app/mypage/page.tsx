@@ -5,6 +5,34 @@ import Menu from "./Menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChessPawn } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
+import { Rating } from "flowbite-react";
+
+const boardData = [
+  {
+    id: 1,
+    title: "Abstract Colors",
+    owner: "Esthera Jackson",
+    image:
+      "https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png",
+    rating: 4.5,
+  },
+  {
+    id: 2,
+    title: "Two Title",
+    owner: "홍길동",
+    image:
+      "https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png",
+    rating: 4.5,
+  },
+  {
+    id: 3,
+    title: "Three Shit",
+    owner: "재익 최",
+    image:
+      "https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png",
+    rating: 4.5,
+  },
+];
 
 const Home = () => {
   return (
@@ -51,130 +79,48 @@ const Home = () => {
                   </div>
 
                   <div className="mb-4 grid grid-cols-4 gap-4 p-4">
-                    <div className="!z-5 shadow-3xl shadow-shadow-500 3xl:p-![18px] undefined relative flex w-full max-w-[300px] flex-col rounded-[20px] border-2 border-gray-200 bg-white bg-clip-border !p-4 dark:border-gray-700">
-                      <div className="h-full w-full">
-                        <div className="relative w-full">
-                          <Image
-                            src="https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png"
-                            className="3xl:h-full 3xl:w-full mb-3 h-full w-full rounded-xl"
-                            alt=""
-                            width={300}
-                            height={300}
-                          />
-                        </div>
-                        <div className="mb-3 flex items-center justify-between px-1 md:items-start">
-                          <div className="mb-2">
-                            <p className="text-navy-700 text-lg font-bold"> Abstract Colors </p>
-                            <p className="mt-1 text-sm font-medium text-gray-600 md:mt-2">
-                              By Esthera Jackson
-                            </p>
+                    {boardData.map(item => (
+                      <div
+                        key={item.id}
+                        className="!z-5 shadow-3xl shadow-shadow-500 3xl:p-![18px] undefined relative flex w-full max-w-[300px] flex-col rounded-[20px] border-2 border-gray-200 bg-white bg-clip-border !p-4 dark:border-gray-700"
+                      >
+                        <div className="h-full w-full">
+                          <div className="relative w-full">
+                            <Image
+                              src={item.image}
+                              className="3xl:h-full 3xl:w-full mb-3 h-full w-full rounded-xl"
+                              alt=""
+                              width={300}
+                              height={300}
+                            />
                           </div>
-                        </div>
-                        <div className="flex items-center justify-between md:items-center lg:justify-between ">
-                          <div className="flex">
-                            <p className="text-brand-500 !mb-0 text-sm font-bold">
-                              Current Bid: 0.91 <span>ETH</span>
-                            </p>
+                          <div className="mb-3 flex items-center justify-between px-1 md:items-start">
+                            <div className="mb-2">
+                              <p className="text-navy-700 text-lg font-bold"> {item.title} </p>
+                              <p className="mt-1 text-sm font-medium text-gray-600 md:mt-2">
+                                By {item.owner}
+                              </p>
+                            </div>
                           </div>
-                          <button className="linear bg-brand-900 hover:bg-brand-800 active:bg-brand-700 rounded-[20px] px-4 py-2 text-base font-medium text-white transition duration-200">
-                            Place Bid
-                          </button>
+                          <div className="flex items-center justify-between md:items-center lg:justify-between ">
+                            <div className="flex items-center justify-between md:items-center lg:justify-between ">
+                              <div className="flex">
+                                <Rating>
+                                  <Rating.Star />
+                                  <Rating.Star />
+                                  <Rating.Star />
+                                  <Rating.Star />
+                                  <Rating.Star filled={false} />
+                                  {/* <p className="ml-2 text-sm font-medium text-gray-500 dark:text-gray-400">
+                                    4.95 out of 5
+                                  </p> */}
+                                </Rating>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="!z-5 shadow-3xl shadow-shadow-500 3xl:p-![18px] undefined relative flex w-full max-w-[300px] flex-col rounded-[20px] border-2 border-gray-200 bg-white bg-clip-border !p-4 dark:border-gray-700">
-                      <div className="h-full w-full">
-                        <div className="relative w-full">
-                          <Image
-                            src="https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png"
-                            className="3xl:h-full 3xl:w-full mb-3 h-full w-full rounded-xl"
-                            alt=""
-                            width={300}
-                            height={300}
-                          />
-                        </div>
-                        <div className="mb-3 flex items-center justify-between px-1 md:items-start">
-                          <div className="mb-2">
-                            <p className="text-navy-700 text-lg font-bold"> Abstract Colors </p>
-                            <p className="mt-1 text-sm font-medium text-gray-600 md:mt-2">
-                              By Esthera Jackson
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex items-center justify-between md:items-center lg:justify-between ">
-                          <div className="flex">
-                            <p className="text-brand-500 !mb-0 text-sm font-bold">
-                              Current Bid: 0.91 <span>ETH</span>
-                            </p>
-                          </div>
-                          <button className="linear bg-brand-900 hover:bg-brand-800 active:bg-brand-700 rounded-[20px] px-4 py-2 text-base font-medium text-white transition duration-200">
-                            Place Bid
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="!z-5 shadow-3xl shadow-shadow-500 3xl:p-![18px] undefined relative flex w-full max-w-[300px] flex-col rounded-[20px] border-2 border-gray-200 bg-white bg-clip-border !p-4 dark:border-gray-700">
-                      <div className="h-full w-full">
-                        <div className="relative w-full">
-                          <Image
-                            src="https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png"
-                            className="3xl:h-full 3xl:w-full mb-3 h-full w-full rounded-xl"
-                            alt=""
-                            width={300}
-                            height={300}
-                          />
-                        </div>
-                        <div className="mb-3 flex items-center justify-between px-1 md:items-start">
-                          <div className="mb-2">
-                            <p className="text-navy-700 text-lg font-bold"> Abstract Colors </p>
-                            <p className="mt-1 text-sm font-medium text-gray-600 md:mt-2">
-                              By Esthera Jackson
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex items-center justify-between md:items-center lg:justify-between ">
-                          <div className="flex">
-                            <p className="text-brand-500 !mb-0 text-sm font-bold">
-                              Current Bid: 0.91 <span>ETH</span>
-                            </p>
-                          </div>
-                          <button className="linear bg-brand-900 hover:bg-brand-800 active:bg-brand-700 rounded-[20px] px-4 py-2 text-base font-medium text-white transition duration-200">
-                            Place Bid
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="!z-5 shadow-3xl shadow-shadow-500 3xl:p-![18px] undefined relative flex w-full max-w-[300px] flex-col rounded-[20px] border-2 border-gray-200 bg-white bg-clip-border !p-4 dark:border-gray-700">
-                      <div className="h-full w-full">
-                        <div className="relative w-full">
-                          <Image
-                            src="https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png"
-                            className="3xl:h-full 3xl:w-full mb-3 h-full w-full rounded-xl"
-                            alt=""
-                            width={300}
-                            height={300}
-                          />
-                        </div>
-                        <div className="mb-3 flex items-center justify-between px-1 md:items-start">
-                          <div className="mb-2">
-                            <p className="text-navy-700 text-lg font-bold"> Abstract Colors </p>
-                            <p className="mt-1 text-sm font-medium text-gray-600 md:mt-2">
-                              By Esthera Jackson
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex items-center justify-between md:items-center lg:justify-between ">
-                          <div className="flex">
-                            <p className="text-brand-500 !mb-0 text-sm font-bold">
-                              Current Bid: 0.91 <span>ETH</span>
-                            </p>
-                          </div>
-                          <button className="linear bg-brand-900 hover:bg-brand-800 active:bg-brand-700 rounded-[20px] px-4 py-2 text-base font-medium text-white transition duration-200">
-                            Place Bid
-                          </button>
-                        </div>
-                      </div>
-                    </div>
+                    ))}
                   </div>
                 </div>
                 <div className="mb-4 flex h-48 items-center justify-center rounded bg-gray-50 dark:bg-gray-800">
