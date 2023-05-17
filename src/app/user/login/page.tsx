@@ -120,7 +120,7 @@ const Login = () => {
                       <p className="mt-2 mb-0 pt-1 text-sm font-semibold">
                         계정이 없으신가요?{" "}
                         <Link
-                          href="signup"
+                          href="/user/signup"
                           className="text-red transition duration-150 ease-in-out hover:text-red-600 focus:text-red-600 active:text-red-700"
                         >
                           회원가입
