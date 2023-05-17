@@ -1,11 +1,14 @@
-import { useState } from "react";
 import Image from "next/image";
 import logo from "../../public/logo.png";
 import Link from "next/link";
+import { FunctionComponent } from "react";
+import { INavItem } from "@/types/interfaces";
 
-const Navbar = () => {
-  const [menuToggle, setMenuToggle] = useState(false);
+type Props = {
+  navList: INavItem[];
+};
 
+const Navbar: FunctionComponent<Props> = () => {
   return (
     <nav className="bg-white">
       <div className="mx-auto px-4">
@@ -61,70 +64,19 @@ const Navbar = () => {
           {/* 메뉴2 */}
           <div className="hidden items-center space-x-1 md:flex">
             <Link
-              href="login"
+              href="/user/login"
               className="text-white-900 rounded bg-white py-2 px-3 transition duration-300 hover:bg-yellow-300 hover:text-yellow-800"
             >
               Login
             </Link>
             <Link
-              href="signup"
+              href="/user/signup"
               className="rounded bg-yellow-400 py-2 px-3 text-yellow-900 transition duration-300 hover:bg-yellow-300 hover:text-yellow-800"
             >
               Signup
             </Link>
           </div>
-
-          {/* mobile menu */}
-          <div className="flex items-center md:hidden">
-            <button onClick={() => setMenuToggle(!menuToggle)}>
-              {menuToggle ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-              )}
-            </button>
-          </div>
         </div>
-      </div>
-
-      {/* mobile menu items */}
-      {/* <div className={classNames("md:hidden", { hidden: !menuToggle })}> */}
-      <div className={!menuToggle ? "md:hidden" : ""}>
-        <Link href="demo" className="block py-2 px-4 text-sm hover:bg-gray-200">
-          Demo
-        </Link>
-        <Link href="board" className="block py-2 px-4 text-sm hover:bg-gray-200">
-          Board
-        </Link>
-        <Link href="info" className="block py-2 px-4 text-sm hover:bg-gray-200">
-          Info
-        </Link>
       </div>
     </nav>
   );
