@@ -62,7 +62,7 @@ const Konva: FunctionComponent = () => {
   };
 
   return (
-    <div className="bg-[url('../../../../public/Test.png')]">
+    <div>
       <Stage
         width={window.innerWidth}
         height={window.innerHeight}
