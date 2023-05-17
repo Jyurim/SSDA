@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope, faBlog } from "@fortawesome/free-solid-svg-icons";
+import Image from "next/image";
 
 const info = () => {
   const team = [
@@ -55,8 +56,10 @@ const info = () => {
               key={member.key}
             >
               <div className="flex flex-col items-center py-6">
-                <img
+                <Image
                   className="mb-4 w-32 rounded-full shadow-lg"
+                  width={128}
+                  height={128}
                   src={`https://github.com/${member.github}.png`}
                   alt={`${member.name} github image`}
                 />
