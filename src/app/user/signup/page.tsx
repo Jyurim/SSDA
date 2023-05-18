@@ -6,7 +6,6 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { userClient } from "@/api/userClient";
 import { useState } from "react";
-import { faL, fas } from "@fortawesome/free-solid-svg-icons";
 interface ISignupForm {
   username: string;
   email: string;
