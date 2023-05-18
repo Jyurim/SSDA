@@ -12,7 +12,7 @@ const ResetPasswordSchema = Yup.object().shape({
 
 const ResetPassword = () => {
   return (
-    <div className="g-6 container flex h-full flex-wrap justify-center px-4 py-5 md:container md:mx-auto">
+    <div className="g-6 container flex h-full min-h-3/4 flex-wrap justify-center px-4 py-5 md:container md:mx-auto">
       <div className="mb-12 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-5/12">
         <div className="block rounded-lg bg-white shadow-lg dark:bg-neutral-800">
           <div className="px-4 md:px-0">

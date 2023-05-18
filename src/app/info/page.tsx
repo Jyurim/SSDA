@@ -40,8 +40,8 @@ const info = () => {
   ];
 
   return (
-    <section className="h-screens">
-      <div className="container flex flex-col justify-center px-4 py-5 md:container md:mx-auto">
+    <section className="min-h-3/4">
+      <div className="container mt-40 flex flex-col justify-center px-4 py-5 md:container md:mx-auto">
         <div className="text-center">
           <h1 className="text-4xl font-bold">Our Team</h1>
           <p className="my-4 py-2 text-xl">
@@ -52,7 +52,7 @@ const info = () => {
         <div className="container grid grid-flow-col grid-rows-2 justify-items-center gap-6">
           {team.map(member => (
             <div
-              className="dark:bg-gray-800 dark:border-gray-700 w-full max-w-lg rounded-lg border border-gray-200 bg-white shadow"
+              className="w-full max-w-lg rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800"
               key={member.key}
             >
               <div className="flex flex-col items-center py-6">
@@ -63,7 +63,7 @@ const info = () => {
                   src={`https://github.com/${member.github}.png`}
                   alt={`${member.name} github image`}
                 />
-                <h5 className="text-gray-900 mb-1 text-xl font-medium">{member.name}</h5>
+                <h5 className="mb-1 text-xl font-medium text-gray-900">{member.name}</h5>
                 <span className="text-sm text-gray-500 dark:text-gray-400">{member.role}</span>
                 <div className="mt-4 flex space-x-3 md:mt-6">
                   <a

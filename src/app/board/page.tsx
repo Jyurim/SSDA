@@ -31,7 +31,7 @@ const boardData = [
 
 const board = () => {
   return (
-    <section className="h-screen">
+    <section className="min-h-3/4">
       <div className="flex w-10/12 flex-col justify-center px-4 py-5 md:container md:mx-auto">
         <div className="grid grid-flow-row grid-cols-4 justify-items-center gap-6">
           {boardData.map(item => (

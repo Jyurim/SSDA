@@ -46,7 +46,7 @@ const Singup = () => {
   };
 
   return (
-    <div className="g-6 container flex h-full flex-wrap items-center justify-center px-4 py-5 text-neutral-800 md:container dark:text-neutral-200 md:mx-auto">
+    <div className="g-6 container flex h-full min-h-3/4 flex-wrap items-center justify-center px-4 py-5 text-neutral-800 md:container dark:text-neutral-200 md:mx-auto">
       <div className="block w-full rounded-lg bg-white shadow-lg dark:bg-neutral-800">
         <div className="g-0 lg:flex lg:flex-wrap">
           <div className="flex items-center justify-center rounded-b-lg lg:w-6/12 lg:rounded-r-lg lg:rounded-bl-none">
