@@ -6,8 +6,6 @@ import logo from "../../../../public/logo.png";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { userClient } from "@/api/userClient";
-import {AnyType} from "@typescript-eslint/type-utils";
-
 interface ILoginForm {
   username: string;
   password: string;
@@ -25,13 +23,13 @@ const Login = () => {
   };
 
   // 액세스 토큰 로컬스토리지에 저장하기 위한 함수
-  function saveTokensToLocalStorage(accessToken:any) {
-    localStorage.setItem('accessToken', accessToken);
+  function saveTokensToLocalStorage(accessToken: any) {
+    localStorage.setItem("accessToken", accessToken);
   }
 
-// API 요청을 통해 토큰을 받아온 후 호출되는 콜백 함수
-  function handleTokenResponse(response:any) {
-    const accessToken = response.data.accessToken;
+  // API 요청을 통해 토큰을 받아온 후 호출되는 콜백 함수
+  function handleTokenResponse(response: any) {
+    const accessToken = response.data.token;
 
     saveTokensToLocalStorage(accessToken);
   }
@@ -40,7 +38,11 @@ const Login = () => {
       .post("/authenticate", {
         username: values.username,
         password: values.password,
-      }).then(handleTokenResponse)
+      })
+      .then(handleTokenResponse)
+      .then(() => {
+        window.location.href = "/";
+      })
       .catch(err => {
         console.log("오류가 발생하였습니다.\n" + err);
       });

@@ -1,14 +1,17 @@
+"use client";
+
 import Image from "next/image";
 import logo from "../../public/logo.png";
 import Link from "next/link";
-import { FunctionComponent } from "react";
-import { INavItem } from "@/types/interfaces";
+import { useEffect, useState } from "react";
 
-type Props = {
-  navList: INavItem[];
-};
+const Navbar = () => {
+  const [accessToken, setAccessToken] = useState<string>("");
 
-const Navbar: FunctionComponent<Props> = () => {
+  useEffect(() => {
+    setAccessToken(localStorage.getItem("accessToken")!);
+  }, []);
+
   return (
     <nav className="bg-white">
       <div className="mx-auto px-4">
@@ -37,6 +40,7 @@ const Navbar: FunctionComponent<Props> = () => {
                   <li className="">
                     <Link
                       className="whitespace-no-wrap block rounded-t bg-gray-200 py-2 px-4 hover:bg-gray-400"
+                      as={accessToken ? "make/draw" : ""}
                       href="make/draw"
                     >
                       draw
@@ -62,20 +66,38 @@ const Navbar: FunctionComponent<Props> = () => {
           </div>
 
           {/* 메뉴2 */}
-          <div className="hidden items-center space-x-1 md:flex">
-            <Link
-              href="/user/login"
-              className="text-white-900 rounded bg-white py-2 px-3 transition duration-300 hover:bg-yellow-300 hover:text-yellow-800"
-            >
-              Login
-            </Link>
-            <Link
-              href="/user/signup"
-              className="rounded bg-yellow-400 py-2 px-3 text-yellow-900 transition duration-300 hover:bg-yellow-300 hover:text-yellow-800"
-            >
-              Signup
-            </Link>
-          </div>
+          {accessToken ? (
+            <div className="flex items-center space-x-1">
+              <Link href="mypage" className="py-5 px-3 text-gray-700 hover:text-gray-900">
+                MyPage
+              </Link>
+              <div
+                onClick={() => {
+                  localStorage.removeItem("accessToken");
+                  setAccessToken("");
+                  window.location.href = "/";
+                }}
+                className="rounded bg-yellow-400 py-2 px-3 text-yellow-900 transition duration-300 hover:bg-yellow-300 hover:text-yellow-800"
+              >
+                Logout
+              </div>
+            </div>
+          ) : (
+            <div className="hidden items-center space-x-1 md:flex">
+              <Link
+                href="/user/login"
+                className="text-white-900 rounded bg-white py-2 px-3 transition duration-300 hover:bg-yellow-300 hover:text-yellow-800"
+              >
+                Login
+              </Link>
+              <Link
+                href="/user/signup"
+                className="rounded bg-yellow-400 py-2 px-3 text-yellow-900 transition duration-300 hover:bg-yellow-300 hover:text-yellow-800"
+              >
+                Signup
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </nav>

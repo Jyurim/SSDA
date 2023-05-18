@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 
 const axiosConfig: AxiosRequestConfig = {
-  baseURL: "/api/user",
+  baseURL: "/api",
   headers: {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
