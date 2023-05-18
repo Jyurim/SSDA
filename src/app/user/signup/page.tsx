@@ -5,6 +5,8 @@ import logo from "../../../../public/logo.png";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { userClient } from "@/api/userClient";
+import { useState } from "react";
+import { faL, fas } from "@fortawesome/free-solid-svg-icons";
 interface ISignupForm {
   username: string;
   email: string;
@@ -22,6 +24,7 @@ const SignupSchema = Yup.object().shape({
 });
 
 const Singup = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const SignupForm: ISignupForm = {
     username: "",
     email: "",
@@ -30,6 +33,7 @@ const Singup = () => {
   };
 
   const handleSubmit = async (values: ISignupForm) => {
+    setIsLoading(true);
     await userClient
       .post("/signup", {
         username: values.username,
@@ -37,6 +41,7 @@ const Singup = () => {
         password: values.password,
       })
       .then(res => {
+        setIsLoading(false);
         res.status === 200 && alert("회원가입이 완료되었습니다.");
         window.location.href = "/user/login";
       })
@@ -129,12 +134,36 @@ const Singup = () => {
                         ) : null}
                       </label>
                     </div>
-                    <div className="text-center lg:text-left">
+                    <div className="flex flex-row items-center justify-between text-center lg:text-left">
                       <button
+                        disabled={isLoading}
                         type="submit"
                         className="hover:bg-blue-600-600 focus:bg-blue-600-600 active:bg-blue-600-700 inline-block rounded bg-blue-600 px-7 pt-3 pb-2.5 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]"
                       >
-                        회원가입
+                        {isLoading ? (
+                          <svg
+                            className="h-5 w-5 animate-spin text-white"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                            ></path>
+                          </svg>
+                        ) : (
+                          <>회원가입</>
+                        )}
                       </button>
                     </div>
                   </form>
