@@ -41,7 +41,7 @@ const info = () => {
 
   return (
     <section className="min-h-3/4">
-      <div className="container mt-40 flex flex-col justify-center px-4 py-5 md:container md:mx-auto">
+      <div className="container my-4 flex flex-col justify-center px-4 md:container md:mx-auto">
         <div className="text-center">
           <h1 className="text-4xl font-bold">Our Team</h1>
           <p className="my-4 py-2 text-xl">
