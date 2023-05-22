@@ -1,16 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import logo from "../../public/logo.png";
+import logo from "@public/logo.png";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useSession, signOut } from "next-auth/react";
 
 const Navbar = () => {
-  const [accessToken, setAccessToken] = useState<string>("");
-
-  useEffect(() => {
-    setAccessToken(localStorage.getItem("accessToken")!);
-  }, []);
+  const { data: session } = useSession();
 
   return (
     <nav className="bg-white">
@@ -19,15 +15,15 @@ const Navbar = () => {
           {/* 메뉴 */}
           <div className="flex space-x-4">
             <div>
-              <Link href="/" className="flex items-center px-2 text-gray-700">
+              <Link href="/" className="flex items-center px-2">
                 <Image src={logo} alt="" width={100} />
-                <span className="pl-4 font-bold">홈</span>
+                <span className="pl-4 font-bold">Home</span>
               </Link>
             </div>
             <div className="z-10 hidden items-center space-x-1 md:flex">
-              <div className="group relative inline-block">
+              <div className="group relative inline-block hover:text-yellow-400">
                 <div className="inline-flex items-center">
-                  <span className="mr-1">만들기</span>
+                  <span className="mr-1">Make</span>
                   <svg
                     className="h-4 w-4 fill-current"
                     xmlns="http://www.w3.org/2000/svg"
@@ -36,84 +32,66 @@ const Navbar = () => {
                     <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
                   </svg>
                 </div>
-                <ul className="absolute hidden pt-1 text-center text-gray-700 group-hover:block">
+                <ul className="absolute hidden pt-1 text-center group-hover:block">
                   <li className="">
                     <Link
-                      className="whitespace-no-wrap block rounded-t bg-gray-200 py-2 px-4 hover:bg-gray-400"
-                      as={accessToken ? "make/draw" : ""}
+                      className="whitespace-no-wrap block rounded-t bg-white py-2 px-4 transition duration-200 hover:bg-yellow-400 hover:text-white"
                       href="make/draw"
                     >
-                      그리기
+                      draw
                     </Link>
                   </li>
                   <li className="">
                     <Link
-                      className="whitespace-no-wrap block rounded-b bg-gray-200 py-2 px-4 hover:bg-gray-400"
+                      className="whitespace-no-wrap block rounded-b bg-white py-2 px-4 transition duration-200 hover:bg-yellow-400 hover:text-white"
                       href="make/file"
                     >
-                      파일
+                      file
                     </Link>
                   </li>
                 </ul>
               </div>
-<<<<<<< Updated upstream:src/components/Navbar.tsx
-              <Link href="board" className="py-5 px-3 text-gray-700 hover:text-gray-900">
-                Board
-              </Link>
-              <Link href="info" className="py-5 px-3 text-gray-700 hover:text-gray-900">
-                Info
-=======
               <Link
                 href="board"
                 className="py-5 px-3 transition duration-200 hover:text-yellow-400"
               >
-                게시판
+                Board
               </Link>
               <Link href="info" className="py-5 px-3 transition duration-200 hover:text-yellow-400">
-                팀 정보
->>>>>>> Stashed changes:components/Navbar.tsx
+                Info
               </Link>
             </div>
           </div>
 
           {/* 메뉴2 */}
-          {accessToken ? (
+          {session?.user ? (
             <div className="flex items-center space-x-1">
-<<<<<<< Updated upstream:src/components/Navbar.tsx
-              <Link href="mypage" className="py-5 px-3 text-gray-700 hover:text-gray-900">
-                MyPage
-=======
               <Link
                 href="mypage"
                 className="py-5 px-3 transition duration-200 hover:text-yellow-400"
               >
-                프로필
->>>>>>> Stashed changes:components/Navbar.tsx
+                MyPage
               </Link>
               <div
-                onClick={() => {
-                  localStorage.removeItem("accessToken");
-                  setAccessToken("");
-                  window.location.href = "/";
-                }}
-                className="rounded bg-yellow-400 py-2 px-3 text-yellow-900 transition duration-300 hover:bg-yellow-300 hover:text-yellow-800"
+                onClick={() => signOut({ redirect: true, callbackUrl: "/" })}
+                className="rounded bg-yellow-400 py-2 px-3 text-yellow-900 transition duration-200 hover:bg-yellow-300 hover:text-yellow-800"
               >
-                로그아웃
+                Logout
               </div>
             </div>
           ) : (
             <div className="hidden items-center space-x-1 md:flex">
               <Link
                 href="/user/login"
-                className="text-white-900 rounded bg-white py-2 px-3 transition duration-300 hover:bg-yellow-300 hover:text-yellow-800"
+                className="text-white-900 rounded bg-white py-2 px-3 transition duration-200 hover:bg-yellow-300 hover:text-yellow-800"
               >
-                로그인
+                Login
               </Link>
               <Link
                 href="/user/signup"
-                className="rounded bg-yellow-400 py-2 px-3 text-yellow-900 transition duration-300 hover:bg-yellow-300 hover:text-yellow-800"
+                className="rounded bg-yellow-400 py-2 px-3 text-yellow-900 transition duration-200 hover:bg-yellow-300 hover:text-yellow-800"
               >
-                회원가입
+                Signup
               </Link>
             </div>
           )}

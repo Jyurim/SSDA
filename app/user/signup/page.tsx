@@ -1,11 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import logo from "../../../../public/logo.png";
+import logo from "@public/logo.png";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { userClient } from "@/api/userClient";
 import { useState } from "react";
+import axios from "axios";
 interface ISignupForm {
   username: string;
   email: string;
@@ -33,7 +33,7 @@ const Singup = () => {
 
   const handleSubmit = async (values: ISignupForm) => {
     setIsLoading(true);
-    await userClient
+    await axios
       .post("/signup", {
         username: values.username,
         email: values.email,

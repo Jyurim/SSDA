@@ -1,7 +1,7 @@
 export default function Home() {
   return (
     <section className="min-h-3/4">
-      <div className="bg-[url('../../public/landing_bg.jpg')]">
+      <div className="bg-[url('../public/landing_bg.jpg')]">
         <div className="mx-auto grid max-w-screen-xl px-4 py-8 lg:grid-cols-12 lg:gap-8 lg:py-16 xl:gap-0">
           <div className="mr-auto place-self-center lg:col-span-7">
             <h1 className="mb-4 max-w-2xl text-4xl font-extrabold leading-none tracking-tight text-gray-100 md:text-5xl xl:text-6xl">

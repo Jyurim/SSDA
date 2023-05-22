@@ -1,5 +1,6 @@
 "use client";
 
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState, useRef, FunctionComponent, useEffect } from "react";
 import { Stage, Layer, Text, Line } from "react-konva";
@@ -10,20 +11,11 @@ interface ILine {
 }
 
 const Konva: FunctionComponent = () => {
-  const router = useRouter();
+  const { data: session } = useSession();
   const [tool, setTool] = useState("pen");
   const [lines, setLines] = useState([] as ILine[]);
   const [history, setHistory] = useState([] as ILine[]);
-  const [accessToken, setAccessToken] = useState<string>("");
   const isDrawing = useRef(false);
-
-  useEffect(() => {
-    setAccessToken(localStorage.getItem("accessToken")!);
-    if (accessToken.length < 3) {
-      console.log(accessToken);
-      router.push("/user/login");
-    }
-  }, []);
 
   const handleMouseDown = e => {
     isDrawing.current = true;
