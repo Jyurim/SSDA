@@ -21,13 +21,13 @@ const Navbar = () => {
             <div>
               <Link href="/" className="flex items-center px-2 text-gray-700">
                 <Image src={logo} alt="" width={100} />
-                <span className="pl-4 font-bold">Home</span>
+                <span className="pl-4 font-bold">홈</span>
               </Link>
             </div>
             <div className="z-10 hidden items-center space-x-1 md:flex">
               <div className="group relative inline-block">
                 <div className="inline-flex items-center">
-                  <span className="mr-1">Make</span>
+                  <span className="mr-1">만들기</span>
                   <svg
                     className="h-4 w-4 fill-current"
                     xmlns="http://www.w3.org/2000/svg"
@@ -43,7 +43,7 @@ const Navbar = () => {
                       as={accessToken ? "make/draw" : ""}
                       href="make/draw"
                     >
-                      draw
+                      그리기
                     </Link>
                   </li>
                   <li className="">
@@ -51,16 +51,27 @@ const Navbar = () => {
                       className="whitespace-no-wrap block rounded-b bg-gray-200 py-2 px-4 hover:bg-gray-400"
                       href="make/file"
                     >
-                      file
+                      파일
                     </Link>
                   </li>
                 </ul>
               </div>
+<<<<<<< Updated upstream:src/components/Navbar.tsx
               <Link href="board" className="py-5 px-3 text-gray-700 hover:text-gray-900">
                 Board
               </Link>
               <Link href="info" className="py-5 px-3 text-gray-700 hover:text-gray-900">
                 Info
+=======
+              <Link
+                href="board"
+                className="py-5 px-3 transition duration-200 hover:text-yellow-400"
+              >
+                게시판
+              </Link>
+              <Link href="info" className="py-5 px-3 transition duration-200 hover:text-yellow-400">
+                팀 정보
+>>>>>>> Stashed changes:components/Navbar.tsx
               </Link>
             </div>
           </div>
@@ -68,8 +79,16 @@ const Navbar = () => {
           {/* 메뉴2 */}
           {accessToken ? (
             <div className="flex items-center space-x-1">
+<<<<<<< Updated upstream:src/components/Navbar.tsx
               <Link href="mypage" className="py-5 px-3 text-gray-700 hover:text-gray-900">
                 MyPage
+=======
+              <Link
+                href="mypage"
+                className="py-5 px-3 transition duration-200 hover:text-yellow-400"
+              >
+                프로필
+>>>>>>> Stashed changes:components/Navbar.tsx
               </Link>
               <div
                 onClick={() => {
@@ -79,7 +98,7 @@ const Navbar = () => {
                 }}
                 className="rounded bg-yellow-400 py-2 px-3 text-yellow-900 transition duration-300 hover:bg-yellow-300 hover:text-yellow-800"
               >
-                Logout
+                로그아웃
               </div>
             </div>
           ) : (
@@ -88,13 +107,13 @@ const Navbar = () => {
                 href="/user/login"
                 className="text-white-900 rounded bg-white py-2 px-3 transition duration-300 hover:bg-yellow-300 hover:text-yellow-800"
               >
-                Login
+                로그인
               </Link>
               <Link
                 href="/user/signup"
                 className="rounded bg-yellow-400 py-2 px-3 text-yellow-900 transition duration-300 hover:bg-yellow-300 hover:text-yellow-800"
               >
-                Signup
+                회원가입
               </Link>
             </div>
           )}
