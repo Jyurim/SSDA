@@ -1,33 +1,37 @@
 "use client";
 
-import { confirmEmailClient } from "@/api/confirmEmailClient";
 import { Button } from "flowbite-react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const ConfirmEmailPage = () => {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const [email, setEmail] = useState<string>("");
   const [token, setToken] = useState<string>("");
   const [mounted, setMounted] = useState<boolean>(false);
 
   useEffect(() => {
-    setEmail(searchParams.get("email") || "");
-    setToken(searchParams.get("token") || "");
+    setEmail(searchParams?.get("email") || "");
+    setToken(searchParams?.get("token") || "");
     setMounted(true);
   }, [searchParams]);
 
   const confirmEmail = async () => {
-    console.log(email, token);
-    await confirmEmailClient
-      .post("/confirm-email", {
+    await fetch("/api/confirm-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
         email,
         token,
-      })
+      }),
+    })
       .then(_ => {
         alert("이메일 인증이 완료되었습니다.\n로그인 해주세요.");
-        window.location.href = "/user/login";
+        router.replace("/user/login");
       })
       .catch(err => {
         console.log(err);
