@@ -5,7 +5,7 @@ import logo from "@public/logo.png";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
-import axios from "axios";
+import { useRouter } from "next/navigation";
 interface ISignupForm {
   username: string;
   email: string;
@@ -23,6 +23,7 @@ const SignupSchema = Yup.object().shape({
 });
 
 const Singup = () => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const SignupForm: ISignupForm = {
     username: "",
@@ -33,16 +34,17 @@ const Singup = () => {
 
   const handleSubmit = async (values: ISignupForm) => {
     setIsLoading(true);
-    await axios
-      .post("/signup", {
-        username: values.username,
-        email: values.email,
-        password: values.password,
-      })
+    await fetch("/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    })
       .then(res => {
         setIsLoading(false);
         res.status === 200 && alert("회원가입이 완료되었습니다.");
-        window.location.href = "/user/login";
+        router.replace("/user/login");
       })
       .catch(err => {
         console.log("오류가 발생하였습니다.\n" + err);
