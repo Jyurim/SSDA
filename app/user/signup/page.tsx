@@ -5,7 +5,8 @@ import logo from "@public/logo.png";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
-import axios from "axios";
+import { useRouter } from "next/navigation";
+import { ErrorWithMsg, SuccessWithMsg } from "@libs/myAlert";
 interface ISignupForm {
   username: string;
   email: string;
@@ -23,7 +24,9 @@ const SignupSchema = Yup.object().shape({
 });
 
 const Singup = () => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const SignupForm: ISignupForm = {
     username: "",
     email: "",
@@ -33,19 +36,28 @@ const Singup = () => {
 
   const handleSubmit = async (values: ISignupForm) => {
     setIsLoading(true);
-    await axios
-      .post("/signup", {
-        username: values.username,
-        email: values.email,
-        password: values.password,
-      })
+    await fetch("https://api.ssda.dawoony.com/api/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values, ["username", "email", "password"]),
+    })
       .then(res => {
         setIsLoading(false);
-        res.status === 200 && alert("회원가입이 완료되었습니다.");
-        window.location.href = "/user/login";
+        if (res.ok == false) {
+          throw new Error(res.statusText);
+        }
+        SuccessWithMsg(
+          "회원가입 완료",
+          "회원가입이 완료되었습니다.\n이메일 인증을 진행해주세요.",
+          router,
+          "/user/login",
+        );
       })
       .catch(err => {
-        console.log("오류가 발생하였습니다.\n" + err);
+        setIsLoading(false);
+        ErrorWithMsg("회원가입 실패", err + "\n다시 시도해주세요.", router, "/user/signup");
       });
   };
 

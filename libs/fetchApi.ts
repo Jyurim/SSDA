@@ -1,8 +1,10 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../pages/api/auth/[...nextauth]";
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
+const BASE_URL = "https://api.ssda.dawoony.com/api/";
+
 async function refreshToken(refreshToken: string) {
-  const res = await fetch(BASE_URL + "/api/auth/refresh", {
+  const res = await fetch(BASE_URL + "auth/refresh", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -13,6 +15,15 @@ async function refreshToken(refreshToken: string) {
   console.log({ data });
 
   return data.accessToken;
+}
+
+export async function fetchApi(url: string, body: any) {
+  const res = await fetch(BASE_URL + url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  return await res.json();
 }
 
 export async function AuthGetApi(url: string) {
