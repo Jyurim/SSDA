@@ -1,7 +1,8 @@
 "use client";
 // import Image from "next/image";
 import { Rating } from "flowbite-react";
-
+import {useEffect, useState} from "react";
+import Link from "next/link";
 const boardData = [
   {
     id: 1,
@@ -32,8 +33,18 @@ const boardData = [
 const board = () => {
   return (
     <section className="min-h-3/4">
-      <div className="flex w-10/12 flex-col justify-center px-4 py-5 md:container md:mx-auto">
-        <div className="grid grid-flow-row grid-cols-4 justify-items-center gap-6">
+      <div className="flex w-full h-full flex-col justify-center px-4 py-5 md:container md:mx-auto">
+        <div style={{ display: 'flex' }}>
+          <Link
+              href="/board/write"
+              className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:focus:ring-yellow-900"
+              //style={{ marginLeft: '30px' }}
+          >
+            쓰기
+          </Link>
+        </div>
+      <div className="grid grid-flow-row grid-cols-4 justify-items-center gap-6">
+
           {boardData.map(item => (
             <div
               key={item.id}
@@ -75,7 +86,10 @@ const board = () => {
             </div>
           ))}
         </div>
+
       </div>
+
+
     </section>
   );
 };
