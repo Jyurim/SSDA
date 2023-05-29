@@ -1,6 +1,8 @@
 "use client";
 
-import { useState, useRef, FunctionComponent } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useState, useRef, FunctionComponent, useEffect } from "react";
 import { Stage, Layer, Text, Line } from "react-konva";
 
 interface ILine {
@@ -9,6 +11,7 @@ interface ILine {
 }
 
 const Konva: FunctionComponent = () => {
+  const { data: session } = useSession();
   const [tool, setTool] = useState("pen");
   const [lines, setLines] = useState([] as ILine[]);
   const [history, setHistory] = useState([] as ILine[]);
