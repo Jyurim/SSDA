@@ -165,7 +165,7 @@ const Konva: FunctionComponent = () => {
     const canvasUrl = layerRef.current?.toDataURL().split(";");
     const contentType = canvasUrl[0].split(":")[1];
     const imageBase64 = canvasUrl[1].split(",")[1];
-    await fetch("https://api.ssda.dawoony.com:8080/api/make/draw", {
+    await fetch("https://api.ssda.dawoony.com/api/make/draw", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${session?.user?.token}`,
