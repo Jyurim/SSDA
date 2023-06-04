@@ -6,7 +6,10 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ErrorWithMsg, SuccessWithMsg } from "@libs/myAlert";
+import { ErrorWithMsg, SuccessWithMsgRouter } from "@libs/myAlert";
+import { ValidationError } from "yup";
+
+const API = process.env.SSDA_API;
 interface ISignupForm {
   username: string;
   email: string;
@@ -15,8 +18,37 @@ interface ISignupForm {
 }
 
 const SignupSchema = Yup.object().shape({
-  username: Yup.string().required("필수 정보입니다."),
-  email: Yup.string().email("이메일 형태가 아닙니다.").required("필수 정보입니다."),
+  username: Yup.string()
+    .test(
+      "checkUsername",
+      "이미 사용중인 이름입니다.",
+      async (value: string | undefined): Promise<boolean | ValidationError> => {
+        if (value) {
+          const res = await fetch(`${API}/api/signup/check?type=username&value=${value}`);
+          const data = await res.json();
+          return !data;
+        } else {
+          return false;
+        }
+      },
+    )
+    .required("필수 정보입니다."),
+  email: Yup.string()
+    .email("이메일 형태가 아닙니다.")
+    .test(
+      "checkEmail",
+      "이미 사용중인 이메일입니다.",
+      async (value: string | undefined): Promise<boolean | ValidationError> => {
+        if (value) {
+          const res = await fetch(`${API}/api/signup/check?type=email&value=${value}`);
+          const data = await res.json();
+          return !data;
+        } else {
+          return false;
+        }
+      },
+    )
+    .required("필수 정보입니다."),
   password: Yup.string().required("필수 정보입니다.").min(6, "6자리 이상 입력해주세요."),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password")], "비밀번호가 일치하지 않습니다.")
@@ -36,7 +68,7 @@ const Singup = () => {
 
   const handleSubmit = async (values: ISignupForm) => {
     setIsLoading(true);
-    await fetch("https://api.ssda.dawoony.com/api/signup", {
+    await fetch(`${API}/api/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -48,7 +80,7 @@ const Singup = () => {
         if (res.ok == false) {
           throw new Error(res.statusText);
         }
-        SuccessWithMsg(
+        SuccessWithMsgRouter(
           "회원가입 완료",
           "회원가입이 완료되었습니다.\n이메일 인증을 진행해주세요.",
           router,
@@ -57,7 +89,7 @@ const Singup = () => {
       })
       .catch(err => {
         setIsLoading(false);
-        ErrorWithMsg("회원가입 실패", err + "\n다시 시도해주세요.", router, "/user/signup");
+        ErrorWithMsg("회원가입 실패", err + "\n다시 시도해주세요.");
       });
   };
 
@@ -74,6 +106,7 @@ const Singup = () => {
                 initialValues={SignupForm}
                 validationSchema={SignupSchema}
                 onSubmit={handleSubmit}
+                enableReinitialize={true}
               >
                 {formik => (
                   <form onSubmit={formik.handleSubmit}>
@@ -149,7 +182,7 @@ const Singup = () => {
                       <button
                         disabled={isLoading}
                         type="submit"
-                        className="hover:bg-blue-600-600 focus:bg-blue-600-600 active:bg-blue-600-700 inline-block rounded bg-blue-600 px-7 pt-3 pb-2.5 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]"
+                        className="hover:bg-blue-600-600 focus:bg-blue-600-600 active:bg-blue-600-700 inline-block rounded bg-blue-600 px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]"
                       >
                         {isLoading ? (
                           <svg
