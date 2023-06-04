@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../pages/api/auth/[...nextauth]";
 
-const BASE_URL = "https://api.ssda.dawoony.com/api/";
+const BASE_URL = process.env.SSDA_API ?? "https://api.ssda.dawoony.com";
 
 async function refreshToken(refreshToken: string) {
   const res = await fetch(BASE_URL + "auth/refresh", {

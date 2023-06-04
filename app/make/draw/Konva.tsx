@@ -9,7 +9,7 @@ import { Button, Modal, Label, TextInput } from "flowbite-react";
 import { ErrorWithMsg, SuccessWithMsgRouter } from "@libs/myAlert";
 import Konva from "konva";
 
-const API = process.env.SSDA_API;
+const API = process.env.SSDA_API ?? "https://api.ssda.dawoony.com";
 
 interface ILine {
   tool: string;

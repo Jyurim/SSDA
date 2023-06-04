@@ -9,7 +9,8 @@ import { useRouter } from "next/navigation";
 import { ErrorWithMsg, SuccessWithMsgRouter } from "@libs/myAlert";
 import { ValidationError } from "yup";
 
-const API = process.env.SSDA_API;
+const API = process.env.SSDA_API ?? "https://api.ssda.dawoony.com";
+
 interface ISignupForm {
   username: string;
   email: string;

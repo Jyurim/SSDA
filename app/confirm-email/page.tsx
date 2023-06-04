@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const API = process.env.SSDA_API;
+const API = process.env.SSDA_API ?? "https://api.ssda.dawoony.com";
 
 const ConfirmEmailPage = () => {
   const { data: session } = useSession();
