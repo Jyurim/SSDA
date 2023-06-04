@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState, useRef, FunctionComponent, useEffect } from "react";
@@ -6,6 +7,9 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Button, Modal, Label, TextInput } from "flowbite-react";
 import { ErrorWithMsg, SuccessWithMsgRouter } from "@libs/myAlert";
+import Konva from "konva";
+
+const API = process.env.SSDA_API;
 
 interface ILine {
   tool: string;
@@ -24,7 +28,7 @@ const words = [
   ["죬", "쭕", "퀧", "튐", "퓹", "흢", "챫"],
 ];
 
-const Konva: FunctionComponent = () => {
+const KonvaComponent: FunctionComponent = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const [tool, setTool] = useState("pen");
@@ -39,8 +43,8 @@ const Konva: FunctionComponent = () => {
   const [fontName, setFontName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const isDrawing = useRef(false);
-  const stageRef = useRef(null);
-  const layerRef = useRef(null);
+  const stageRef = useRef<Konva.Stage>(null);
+  const layerRef = useRef<Konva.Layer>(null);
   useEffect(() => {
     const handleResize = () => {
       setSize({
@@ -55,14 +59,14 @@ const Konva: FunctionComponent = () => {
   }, []);
   const borderColor = "black";
 
-  const handleMouseDown = e => {
+  const handleMouseDown = (e: any) => {
     isDrawing.current = true;
     const pos = e.target.getStage().getPointerPosition();
     setLines([...lines, { tool, points: [pos.x, pos.y] }]);
     setHistory([...lines, { tool, points: [pos.x, pos.y] }]);
   };
 
-  const handleMouseMove = e => {
+  const handleMouseMove = (e: any) => {
     // no drawing - skipping
     if (!isDrawing.current) {
       return;
@@ -118,39 +122,43 @@ const Konva: FunctionComponent = () => {
   const CreateCell = () => {
     const result = [];
     const stage = stageRef.current?.getStage();
-    const gridSize = stage.width() / 7;
+    if (stage) {
+      const gridSize = stage?.width() / 7;
 
-    for (let i = 0; i < 7; i++) {
-      const x = i * gridSize;
-      result.push(drawLine(x, 0, x, stage.height()));
-    }
+      for (let i = 0; i < 7; i++) {
+        const x = i * gridSize;
+        result.push(drawLine(x, 0, x, stage.height()));
+      }
 
-    for (let j = 0; j < 4; j++) {
-      const y = j * gridSize;
-      result.push(drawLine(0, y, stage.width(), y));
+      for (let j = 0; j < 4; j++) {
+        const y = j * gridSize;
+        result.push(drawLine(0, y, stage.width(), y));
+      }
+      return result;
     }
-    return result;
   };
 
   const DrawText = () => {
     const stage = stageRef.current?.getStage();
-    const gridSize = stage.width() / 7;
-    const result = [];
-    for (let i = 0; i < 7; i++) {
-      for (let j = 0; j < 4; j++) {
-        result.push(
-          <Text
-            x={i * gridSize + 3}
-            y={j * gridSize + 3}
-            text={words[j][i]}
-            align="center"
-            verticalAlign="middle"
-            fontSize={gridSize / 6}
-          />,
-        );
+    if (stage) {
+      const gridSize = stage.width() / 7;
+      const result = [];
+      for (let i = 0; i < 7; i++) {
+        for (let j = 0; j < 4; j++) {
+          result.push(
+            <Text
+              x={i * gridSize + 3}
+              y={j * gridSize + 3}
+              text={words[j][i]}
+              align="center"
+              verticalAlign="middle"
+              fontSize={gridSize / 6}
+            />,
+          );
+        }
       }
+      return result;
     }
-    return result;
   };
 
   const onCloseReset = () => {
@@ -163,12 +171,17 @@ const Konva: FunctionComponent = () => {
   const handleCreate = async () => {
     setIsLoading(true);
     const canvasUrl = layerRef.current?.toDataURL().split(";");
+    if (!canvasUrl) {
+      setIsLoading(false);
+      ErrorWithMsg("이미지 저장 실패", "이미지 저장에 실패하였습니다");
+      return;
+    }
     const contentType = canvasUrl[0].split(":")[1];
     const imageBase64 = canvasUrl[1].split(",")[1];
-    await fetch("https://api.ssda.dawoony.com/api/make/draw", {
+    await fetch(`${API}/api/make/draw`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${session?.user?.token}`,
+        Authorization: `Bearer ${session?.user?.accessToken}`,
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "POST",
@@ -278,20 +291,8 @@ const Konva: FunctionComponent = () => {
         ref={stageRef}
       >
         <Layer>
-          <DrawText />
-        </Layer>
-        <Layer ref={layerRef}>
-          {lines.map((line, i) => (
-            <Line
-              key={i}
-              points={line.points}
-              stroke="black"
-              strokeWidth={3}
-              tension={0.5}
-              lineCap="round"
-              lineJoin="round"
-              globalCompositeOperation={line.tool === "eraser" ? "destination-out" : "source-over"}
-            />
+          {DrawText()?.map((item, index) => (
+            <div key={index}>{item}</div>
           ))}
           <Line
             points={[0, 0, size.stageWidth, 0]}
@@ -325,7 +326,23 @@ const Konva: FunctionComponent = () => {
             lineCap="round"
             lineJoin="round"
           />
-          <CreateCell />
+          {CreateCell()?.map((cell, i) => (
+            <div key={i}>{cell}</div>
+          ))}
+        </Layer>
+        <Layer ref={layerRef}>
+          {lines.map((line, i) => (
+            <Line
+              key={i}
+              points={line.points}
+              stroke="black"
+              strokeWidth={3}
+              tension={0.5}
+              lineCap="round"
+              lineJoin="round"
+              globalCompositeOperation={line.tool === "eraser" ? "destination-out" : "source-over"}
+            />
+          ))}
         </Layer>
       </Stage>
       <div className="flex gap-20">
@@ -387,4 +404,4 @@ const Konva: FunctionComponent = () => {
   );
 };
 
-export default Konva;
+export default KonvaComponent;
