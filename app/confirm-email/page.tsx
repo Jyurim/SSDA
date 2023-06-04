@@ -1,11 +1,13 @@
 "use client";
 
-import { SuccessWithMsg, ErrorWithMsg } from "@libs/myAlert";
+import { ErrorWithMsgRouter, SuccessWithMsgRouter } from "@libs/myAlert";
 import { Button } from "flowbite-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+
+const API = process.env.SSDA_API;
 
 const ConfirmEmailPage = () => {
   const { data: session } = useSession();
@@ -16,7 +18,7 @@ const ConfirmEmailPage = () => {
 
   useEffect(() => {
     if (session) {
-      ErrorWithMsg(
+      ErrorWithMsgRouter(
         "이미 로그인 되어있음",
         "이미 로그인 되어있습니다.\n로그아웃 후 이메일 인증을 진행해주세요.",
         router,
@@ -31,14 +33,14 @@ const ConfirmEmailPage = () => {
 
   const confirmEmail = async () => {
     if (!email || !token) {
-      ErrorWithMsg(
+      ErrorWithMsgRouter(
         "올바르지 않은 접근",
         "올바르지 않은 접근입니다.\n다시 시도해주세요.",
         router,
         "/",
       );
     }
-    await fetch("https://api.ssda.dawoony.com/api/confirm-email", {
+    await fetch(`${API}/api/confirm-email`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -49,7 +51,7 @@ const ConfirmEmailPage = () => {
       }),
     })
       .then(_ => {
-        SuccessWithMsg(
+        SuccessWithMsgRouter(
           "인증 완료",
           "이메일 인증이 완료되었습니다\n로그인 해주세요.",
           router,
@@ -68,7 +70,7 @@ const ConfirmEmailPage = () => {
         <p className="mb-6">이메일 인증을 완료하시려면 아래 버튼을 클릭 해주세요.</p>
         <Button
           onClick={confirmEmail}
-          className="focus:shadow-outline w-full rounded bg-blue-500 py-2 px-4 text-center font-bold text-white hover:bg-blue-600 focus:outline-none"
+          className="focus:shadow-outline w-full rounded bg-blue-500 px-4 py-2 text-center font-bold text-white hover:bg-blue-600 focus:outline-none"
         >
           이메일 인증
         </Button>
