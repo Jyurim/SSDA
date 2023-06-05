@@ -31,6 +31,9 @@ const boardData = [
 ];
 
 const board = () => {
+
+
+
   return (
     <section className="min-h-3/4">
       <div className="flex w-full h-full flex-col justify-center px-4 py-5 md:container md:mx-auto">

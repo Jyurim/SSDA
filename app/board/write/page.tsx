@@ -1,58 +1,52 @@
 "use client";
-import {useEffect, useState} from "react";
+import { useState} from "react";
 const fontData = [
   {
     id: 1,
     title: "Abstract Colors",
     image:
-      "https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png",
+        "https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png",
   },
   {
     id: 2,
     title: "Two Title",
     image:
-      "https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png",
+        "https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png",
   },
   {
     id: 3,
     title: "Three Shit",
     image:
-      "https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png",
+        "https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png",
   },
 ];
-const write = () => {
-  const [post, setPost] = useState([]);
-  const [newPost, setNewPost] = useState({ title: '', font: '' });
 
-  useEffect(() => {
-    fetch('/api/board/')
-        .then(response => response.json())
-        .then(data => setPost(data));
-  }, []);
+const Write = () => {
+  const [newPost, setNewPost] = useState({ title: "", fontName: "" });
+
+  const handleTitleChange = (event: { target: { value: any; }; }) => {
+    setNewPost({ ...newPost, title: event.target.value });
+  };
+
+  const handleFontChange = (event: { target: { value: any; }; }) => {
+    setNewPost({ ...newPost, fontName: event.target.value });
+  };
 
   const savePost = async () => {
-    await fetch('/api/board/write', {
-      method: 'POST',
+    await fetch("/api/board/write", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(newPost),
     })
-        .then(response => response.json())
-        .then(data => {
-          console.log('저장 완료', data);
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("저장 완료", data);
         })
-        .catch(error => {
-          console.log('에러 발생', error);
+        .catch((error) => {
+          console.log("에러 발생", error);
         });
-  };
-
-  const handleTitleChange = (e: { target: { value: any; }; }) => {
-    setNewPost({ ...newPost, title: e.target.value });
-  };
-
-  const handleFontChange = (e: { target: { value: any; }; }) => {
-    setNewPost({ ...newPost, font: e.target.value });
   };
 
   return (
@@ -60,7 +54,7 @@ const write = () => {
         <div className="flex w-5/12 flex-col justify-center px-4 py-5 md:container md:mx-auto">
           <div className="relative mb-6">
             <label className="block">
-            <span className="block  text-sm font-medium text-slate-700 after:ml-0.5 after:text-red-500 after:content-['*']">
+            <span className="block  text-sm font-medium text-slate-700 after:ml-0.5 after:text-red-500 afFter:content-['*']">
               제목
             </span>
               <input
@@ -80,12 +74,12 @@ const write = () => {
             </span>
               <select
                   id="countries"
-                  value={newPost.font}
+                  value={newPost.fontName}
                   onChange={handleFontChange}
                   className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
               >
                 <option value="">선택</option>
-                {fontData.map(item => (
+                {fontData.map((item) => (
                     <option key={item.id} value={item.title}>
                       {item.title}
                     </option>
@@ -104,4 +98,4 @@ const write = () => {
   );
 };
 
-export default write;
+export default Write;
