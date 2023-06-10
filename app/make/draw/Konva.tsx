@@ -7,6 +7,8 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Button, Modal, Label, TextInput } from "flowbite-react";
 import { ErrorWithMsg, SuccessWithMsgRouter } from "@libs/myAlert";
+import { useScrollBlock } from "@libs/hooks/useScrollBlock";
+import { useMultiTouchBlock } from "@libs/hooks/useMultiTouchBlock";
 import Konva from "konva";
 
 const API = process.env.SSDA_API ?? "https://api.ssda.dawoony.com";
@@ -25,18 +27,20 @@ const words = [
   ["가", "귓", "깩", "낐", "냒", "댕", "댻"],
   ["땾", "떤", "랯", "렍", "멐", "멶", "벹"],
   ["볟", "뽈", "셮", "솱", "쇎", "쏗", "욃"],
-  ["죬", "쭕", "퀧", "튐", "퓹", "흢", "챫"],
+  ["죬", "쭕", "퀧", "튐", "퓹", "흢", "챮"],
 ];
 
 const KonvaComponent: FunctionComponent = () => {
   const { data: session } = useSession();
   const router = useRouter();
+  const [blockScroll, allowScroll] = useScrollBlock();
+  const [blockMultiTouch] = useMultiTouchBlock();
   const [tool, setTool] = useState("pen");
   const [lines, setLines] = useState([] as ILine[]);
   const [history, setHistory] = useState([] as ILine[]);
   const [size, setSize] = useState({
-    stageWidth: window.innerWidth - 80,
-    stageHeight: ((window.innerWidth - 80) / 7) * 4,
+    stageWidth: window.innerWidth - 128,
+    stageHeight: ((window.innerWidth - 128) / 7) * 4,
   } as ISize);
   const [modalReset, setModalReset] = useState(false);
   const [modalCompl, setModalCompl] = useState(false);
@@ -48,18 +52,22 @@ const KonvaComponent: FunctionComponent = () => {
   useEffect(() => {
     const handleResize = () => {
       setSize({
-        stageWidth: window.innerWidth - 80,
-        stageHeight: ((window.innerWidth - 80) / 7) * 4,
+        stageWidth: window.innerWidth - 128,
+        stageHeight: ((window.innerWidth - 128) / 7) * 4,
       });
     };
     window.addEventListener("resize", handleResize);
+    blockMultiTouch();
     return () => {
+      blockMultiTouch();
       window.removeEventListener("resize", handleResize);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const borderColor = "black";
 
   const handleMouseDown = (e: any) => {
+    blockScroll();
     isDrawing.current = true;
     const pos = e.target.getStage().getPointerPosition();
     setLines([...lines, { tool, points: [pos.x, pos.y] }]);
@@ -86,6 +94,7 @@ const KonvaComponent: FunctionComponent = () => {
 
   const handleMouseUp = () => {
     isDrawing.current = false;
+    allowScroll();
   };
 
   const handleUndo = () => {
@@ -109,6 +118,7 @@ const KonvaComponent: FunctionComponent = () => {
   const drawLine = (x1: number, y1: number, x2: number, y2: number) => {
     return (
       <Line
+        key={x1.toString() + y1.toString() + x2.toString() + y2.toString()}
         points={[x1, y1, x2, y2]}
         stroke="black"
         strokeWidth={1}
@@ -147,6 +157,7 @@ const KonvaComponent: FunctionComponent = () => {
         for (let j = 0; j < 4; j++) {
           result.push(
             <Text
+              key={i.toString() + j.toString()}
               x={i * gridSize + 3}
               y={j * gridSize + 3}
               text={words[j][i]}
@@ -287,13 +298,11 @@ const KonvaComponent: FunctionComponent = () => {
         onTouchStart={handleMouseDown}
         onTouchMove={handleMouseMove}
         onTouchEnd={handleMouseUp}
-        className="p-10"
+        className="p-16"
         ref={stageRef}
       >
         <Layer>
-          {DrawText()?.map((item, index) => (
-            <div key={index}>{item}</div>
-          ))}
+          {DrawText()}
           <Line
             points={[0, 0, size.stageWidth, 0]}
             stroke={borderColor}
@@ -326,9 +335,7 @@ const KonvaComponent: FunctionComponent = () => {
             lineCap="round"
             lineJoin="round"
           />
-          {CreateCell()?.map((cell, i) => (
-            <div key={i}>{cell}</div>
-          ))}
+          {CreateCell()}
         </Layer>
         <Layer ref={layerRef}>
           {lines.map((line, i) => (
