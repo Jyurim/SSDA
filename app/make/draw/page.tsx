@@ -17,7 +17,7 @@ export default function DrawPage() {
   useEffect(() => {
     if (!session) {
       noAuth(router);
-    }
+    };
   }, [router, session]);
 
   return (
