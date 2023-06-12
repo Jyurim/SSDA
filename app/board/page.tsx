@@ -2,6 +2,8 @@
 // import Image from "next/image";
 import { Rating } from "flowbite-react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+
 const boardData = [
   {
     id: 1,
@@ -29,10 +31,12 @@ const boardData = [
   },
 ];
 
-const board = () => {
+const Board = () => {
+  const { data: session } = useSession();
   return (
     <section className="min-h-3/4">
       <div className="flex h-full w-full flex-col justify-center px-4 py-5 md:container md:mx-auto">
+        {session?.user ? (
         <div style={{ display: "flex" }}>
           <Link
             href="/board/write"
@@ -41,7 +45,7 @@ const board = () => {
           >
             쓰기
           </Link>
-        </div>
+        </div>):(<></>)}
         <div className="grid grid-flow-row grid-cols-4 justify-items-center gap-6">
           {boardData.map(item => (
             <div
@@ -91,4 +95,4 @@ const board = () => {
   );
 };
 
-export default board;
+export default Board;
