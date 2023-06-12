@@ -65,28 +65,33 @@ const info = () => {
                 />
                 <h5 className="mb-1 text-xl font-medium text-gray-900">{member.name}</h5>
                 <span className="text-sm text-gray-500 dark:text-gray-400">{member.role}</span>
-                <div className="mt-4 flex space-x-3 md:mt-6">
+                <div className="mt-4 flex items-center justify-center space-x-3">
                   <a
                     href={`https://github.com/${member.github}`}
                     target={"_blank"}
                     rel="noreferrer"
-                    className="mr-2"
+                    className="flex-1.4"
                   >
-                    <FontAwesomeIcon icon={faGithub} size="2xl" />
+                    <FontAwesomeIcon icon={faGithub} />
                   </a>
                   {member.blog ? (
                     <a
                       href={`https://${member.blog}`}
                       target={"_blank"}
                       rel="noreferrer"
-                      className="mr-2"
+                      className="flex-1.4"
                     >
-                      <FontAwesomeIcon icon={faBlog} size="2xl" />
+                      <FontAwesomeIcon icon={faBlog} />
                     </a>
                   ) : null}
 
-                  <a href={`mailto:${member.email}`} target={"_blank"} rel="noreferrer">
-                    <FontAwesomeIcon icon={faEnvelope} size="2xl" />
+                  <a
+                    href={`mailto:${member.email}`}
+                    target={"_blank"}
+                    rel="noreferrer"
+                    className="flex-1.4"
+                  >
+                    <FontAwesomeIcon icon={faEnvelope} />
                   </a>
                 </div>
               </div>

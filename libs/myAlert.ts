@@ -14,7 +14,7 @@ export const noAuth = (router: AppRouterInstance) => {
   });
 };
 
-export const SuccessWithMsg = (
+export const SuccessWithMsgRouter = (
   title: string,
   message: string,
   router: AppRouterInstance,
@@ -29,7 +29,7 @@ export const SuccessWithMsg = (
   });
 };
 
-export const ErrorWithMsg = (
+export const ErrorWithMsgRouter = (
   title: string,
   message: string,
   router: AppRouterInstance,
@@ -41,5 +41,21 @@ export const ErrorWithMsg = (
     text: message,
   }).then(() => {
     router.push(path);
+  });
+};
+
+export const SuccessWithMsg = (title: string, message: string) => {
+  MySwal.fire({
+    icon: "success",
+    title: title,
+    text: message,
+  });
+};
+
+export const ErrorWithMsg = (title: string, message: string) => {
+  MySwal.fire({
+    icon: "error",
+    title: title,
+    text: message,
   });
 };
