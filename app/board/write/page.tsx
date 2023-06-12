@@ -1,5 +1,10 @@
 "use client";
 import { useState} from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { noAuth } from "@libs/myAlert";
+
 const fontData = [
   {
     id: 1,
@@ -22,6 +27,15 @@ const fontData = [
 ];
 
 const Write = () => {
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!session) {
+      noAuth(router);
+    }
+  }, []);
+  
   const [newPost, setNewPost] = useState({ title: "", fontName: "" });
 
   const handleTitleChange = (event: { target: { value: any; }; }) => {

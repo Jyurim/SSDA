@@ -1,10 +1,7 @@
 "use client";
 // import Image from "next/image";
 import { Rating } from "flowbite-react";
-import { GetStaticProps } from 'next';
 import Link from "next/link";
-import { useRouter } from 'next/router';
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 const boardData = [
   {
     id: 1,
