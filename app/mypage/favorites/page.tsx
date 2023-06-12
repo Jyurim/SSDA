@@ -2,6 +2,10 @@
 import Menu from "../Menu";
 import Image from "next/image";
 import { Rating } from "flowbite-react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { noAuth } from "@libs/myAlert";
 
 const boardData = [
   {
@@ -30,7 +34,15 @@ const boardData = [
   },
 ];
 
-const favorites = () => {
+const Favorites = () => {
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!session) {
+      noAuth(router);
+    }
+  }, []);
   return (
     <section className="h-screen">
       <div className="flex">
@@ -113,4 +125,4 @@ const favorites = () => {
   );
 };
 
-export default favorites;
+export default Favorites;
