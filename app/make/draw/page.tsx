@@ -14,10 +14,9 @@ const NoSSRComponent = dynamic(() => import("./Konva"), {
 
 export default function DrawPage() {
   const { data: session } = useSession();
-  console.log("session", session);
   const router = useRouter();
   useEffect(() => {
-    if (session == null) {
+    if (session === null) {
       noAuth(router);
     }
   }, [router, session]);
