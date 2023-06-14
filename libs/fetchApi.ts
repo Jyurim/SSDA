@@ -10,14 +10,12 @@ async function refreshToken(refreshToken: string) {
     }),
   });
   const data = await res.json();
-  console.log({ data });
 
   return data.accessToken;
 }
 
 export async function AuthGetApi(url: string) {
   const session = await getServerSession(authOptions);
-  console.log("before: ", session?.user.accessToken);
 
   let res = await fetch(BASE_URL + url, {
     method: "GET",
@@ -28,7 +26,6 @@ export async function AuthGetApi(url: string) {
 
   if (res.status == 401) {
     if (session) session.user.accessToken = await refreshToken(session?.user.refreshToken ?? "");
-    console.log("after: ", session?.user.accessToken);
 
     res = await fetch(BASE_URL + url, {
       method: "GET",
