@@ -8,14 +8,15 @@ import Image from "next/image";
 import { Rating } from "flowbite-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { noAuth } from "@libs/myAlert";
+import Link from 'next/link';
 
 const boardData = [
   {
     id: 1,
     title: "Abstract Colors",
-    owner: "Esthera Jackson",
+    owner: "ur",
     image:
       "https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png",
     rating: 4.5,
@@ -41,12 +42,13 @@ const boardData = [
 const Home = () => {
   const { data: session } = useSession();
   const router = useRouter();
-
+  const user = useState();
   useEffect(() => {
     if (!session) {
       noAuth(router);
     }
   }, []);
+
 
   return (
     <>
@@ -61,7 +63,7 @@ const Home = () => {
           </div>
           <div className="w-full">
             <div className="px-3 py-2">
-              <div className="rounded-lg border-2 border-dashed border-gray-200 p-4 dark:border-gray-700">
+              <div className="rounded-lg border-2 border-dashed border-gray-200 p-4 dark:border-gray-700 min-h-screen">
                 <div className="mb-2 grid grid-cols-2 gap-4">
                   <div className="rounded-lg bg-white p-4">
                     <div>
@@ -71,6 +73,24 @@ const Home = () => {
                       />
                       내 계정
                     </div>
+                    <div className='rounded-lg bg-white p-4'>
+                      <div>
+                        아이디
+                      <p className="text-sm font-medium text-gray-600 p-2">
+                        {session?.user.username}
+                      </p>
+                      </div>
+                      
+                      이메일
+                      <p className="text-sm font-medium text-gray-600 md:mt-2">
+                        {session?.user.email}
+                      </p>
+                    </div>
+                    <Link href="/mypage/userCheck">
+                      <button className="mt-2 text-sm font-medium text-gray-600 md:mt-2">
+                        개인정보 수정
+                      </button>
+                    </Link>
                   </div>
                   <div className="rounded-lg bg-white p-4">
                     <div>
@@ -92,11 +112,12 @@ const Home = () => {
                   </div>
 
                   <div className="mb-4 grid grid-cols-4 gap-4 p-4">
-                    {boardData.map(item => (
+                    {boardData.filter((post) => post.owner===session?.user.username).map(item => (
                       <div
                         key={item.id}
                         className="!z-5 shadow-3xl shadow-shadow-500 3xl:p-![18px] undefined relative flex w-full max-w-[300px] flex-col rounded-[20px] border-2 border-gray-200 bg-white bg-clip-border !p-4 dark:border-gray-700"
                       >
+                        <Link href={`/board/post/${item.id}`}>
                         <div className="h-full w-full">
                           <div className="relative w-full">
                             <Image
@@ -111,7 +132,7 @@ const Home = () => {
                             <div className="mb-2">
                               <p className="text-navy-700 text-lg font-bold"> {item.title} </p>
                               <p className="mt-1 text-sm font-medium text-gray-600 md:mt-2">
-                                By {item.owner}
+                                By. {item.owner}
                               </p>
                             </div>
                           </div>
@@ -132,15 +153,10 @@ const Home = () => {
                             </div>
                           </div>
                         </div>
+                        </Link>
                       </div>
                     ))}
                   </div>
-                </div>
-                <div className="mb-4 flex h-48 items-center justify-center rounded bg-gray-50 dark:bg-gray-800">
-                  <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-                </div>
-                <div className="mb-4 flex h-48 items-center justify-center rounded bg-gray-50 dark:bg-gray-800">
-                  <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
                 </div>
               </div>
             </div>
