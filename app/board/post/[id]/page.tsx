@@ -5,75 +5,41 @@ import { usePathname} from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useSession } from "next-auth/react";
 
-const boardData = [
-  {
-    id: 1,
-    title: "Abstract Colors",
-    owner: "Esthera Jackson",
-    image:
-      "https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png",
-    rating: 4.5,
-  },
-  {
-    id: 2,
-    title: "Two Title",
-    owner: "홍길동",
-    image:
-      "https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png",
-    rating: 4.5,
-  },
-  {
-    id: 3,
-    title: "Three Shit",
-    owner: "재익 최",
-    image:
-      "https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png",
-    rating: 4.5,
-  },
-];
+export interface IDetailInfo {
+  id: number;
+  title: string;
+  fontName: string;
+  fontGenerator: string;
+  imageFile: string;
+}
 
 export default function Post() {
   const { data: session } = useSession();
-  const [post, setPost] = useState<{ id: number; title: string; owner: string; image: string }>();
+  const [post, setPost] = useState<IDetailInfo>();
   const uid = usePathname()?.split('/')[3];
+   
+  const getPost = async () => {
+    const response = await fetch(`http://127.0.0.1:8080/api/board/${uid}`, {
+      headers: {
+        Authorization: `Bearer ${session?.user?.accessToken}`,
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET",
+        "Access-Control-Allow-Headers": "*",
+      },
+    });
+    console.log("response",response)
+    
+    if (response.ok) {
+      const data = await response.json();
+      setPost(data);
+      console.log("data",post)
+    }
+  };
 
   useEffect(() => {
-    const getPost = (uid: any) => {
-      const newPost = boardData.find((post) => post.id === Number(uid));
-      if (newPost) {
-        setPost(newPost);
-      }
-    };
-
-    if (uid) {
-      getPost(uid);
-    }
-  }, [uid]);
-
-  // const getPost = async () => {
-  //   await fetch(`/api/board/${uid}`, {
-  //     method: 'GET',
-  //     headers: {
-  //       Accept: 'application/json',
-  //     },
-  //     mode: 'cors',
-  //     credentials: 'include',
-  //   })
-  //     .then((res) => {
-  //       if (res.ok) return res.json();
-  //     })
-  //     .then((data) => {
-  //       console.log(data);
-  //       setPost(data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   getPost();
-  // }, [id]);
+    if (session?.user.accessToken !== null) getPost();
+  }, [session]);
 
     return (
         <section className="h-screen">
@@ -85,7 +51,7 @@ export default function Post() {
               {post?.title}
             </span>
             <span className="block  text-lg font-medium text-slate-600 after:ml-0.5 after:text-red-500 afFter:content-['*']">
-              By. {post?.owner}
+              By. {post?.fontGenerator}
             </span>
             </label>
           </div>
@@ -98,13 +64,11 @@ export default function Post() {
           </div>
           <div className="relative mb-6">
             <Image 
-            width={500}
-            height={500}
-              src="https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png"
-              // className="3xl:h-full 3xl:w-full mb-3 h-full w-full rounded-xl"
-              alt=""/>
+              width={500}
+              height={500}
+              src={`/${post?.imageFile}`}
+              alt="Font Image"/>
           </div>
-         
         </div>
       </section>
     )
