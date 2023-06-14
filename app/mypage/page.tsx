@@ -43,10 +43,10 @@ const Home = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!session) {
+    if (session === null) {
       noAuth(router);
     }
-  }, []);
+  }, [router, session]);
 
   return (
     <>

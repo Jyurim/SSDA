@@ -3,7 +3,6 @@
 
 import { useState, useRef, FunctionComponent, useEffect } from "react";
 import { Stage, Layer, Line, Text } from "react-konva";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Button, Modal, Label, TextInput } from "flowbite-react";
 import { ErrorWithMsg, SuccessWithMsgRouter } from "@libs/myAlert";
@@ -30,8 +29,11 @@ const words = [
   ["죬", "쭕", "퀧", "튐", "퓹", "흢", "챮"],
 ];
 
-const KonvaComponent: FunctionComponent = () => {
-  const { data: session } = useSession();
+type Props = {
+  token: string | undefined;
+};
+
+const KonvaComponent: FunctionComponent<Props> = ({ token }: { token: string | undefined }) => {
   const router = useRouter();
   const [blockScroll, allowScroll] = useScrollBlock();
   const [blockMultiTouch] = useMultiTouchBlock();
@@ -192,7 +194,7 @@ const KonvaComponent: FunctionComponent = () => {
     await fetch(`${API}/api/make/draw`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${session?.user?.accessToken}`,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "POST",
