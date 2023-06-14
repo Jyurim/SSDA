@@ -212,14 +212,15 @@ const KonvaComponent: FunctionComponent<Props> = ({ token }: { token: string | u
         }
         SuccessWithMsgRouter(
           "이미지 저장 완료!!",
-          "이미지 저장이 완료되었습니다\n생성이 완료되면 메일로 알려드릴게요!",
+          "이미지 저장이 완료되었습니다.\n생성이 완료되면 메일로 알려드릴게요!",
           router,
           "/board",
         );
         setIsLoading(false);
       })
       .catch(err => {
-        ErrorWithMsg("이미지 저장 실패", "이미지 저장에 실패했습니다" + err);
+        ErrorWithMsg("이미지 저장 실패", "이미지 저장에 실패했습니다." + err);
+        setIsLoading(false);
       });
   };
 
@@ -291,6 +292,7 @@ const KonvaComponent: FunctionComponent<Props> = ({ token }: { token: string | u
 
   return (
     <div className="flex flex-col items-center justify-center">
+      <h3 className="text-2xl">칸에 맞게 화면에 보이는 글자를 따라 적어주세요.</h3>
       <Stage
         width={size.stageWidth}
         height={size.stageHeight}
@@ -300,7 +302,7 @@ const KonvaComponent: FunctionComponent<Props> = ({ token }: { token: string | u
         onTouchStart={handleMouseDown}
         onTouchMove={handleMouseMove}
         onTouchEnd={handleMouseUp}
-        className="p-16"
+        className="px-16 pb-8 pt-6"
         ref={stageRef}
       >
         <Layer>
