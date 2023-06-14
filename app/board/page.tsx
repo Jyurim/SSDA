@@ -1,38 +1,42 @@
 "use client";
 // import Image from "next/image";
-import { Rating } from "flowbite-react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { useEffect, useState } from 'react';
 
-const boardData = [
-  {
-    id: 1,
-    title: "Abstract Colors",
-    owner: "Esthera Jackson",
-    image:
-      "https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png",
-    rating: 4.5,
-  },
-  {
-    id: 2,
-    title: "Two Title",
-    owner: "홍길동",
-    image:
-      "https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png",
-    rating: 4.5,
-  },
-  {
-    id: 3,
-    title: "Three Shit",
-    owner: "재익 최",
-    image:
-      "https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png",
-    rating: 4.5,
-  },
-];
+export interface IDetailInfo {
+  id: number;
+  title: string;
+  fontName: string;
+  fontGenerator: string;
+}
 
 const Board = () => {
   const { data: session } = useSession();
+  const [board, setBoard] = useState<IDetailInfo[]>([]);
+ 
+  const getBoard = async () => {
+      const response = await fetch(`http://127.0.0.1:8080/api/board`, {
+        headers: {
+          Authorization: `Bearer ${session?.user?.accessToken}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET",
+          "Access-Control-Allow-Headers": "*",
+        },
+      });
+      console.log("response",response)
+      
+      if (response.ok) {
+        const data = await response.json();
+        setBoard(data);
+      }
+  };
+
+  useEffect(() => {
+    if (session?.user.accessToken !== null) getBoard();
+  }, [session]);
+  
   return (
     <section className="min-h-3/4">
       <div className="flex h-full w-full flex-col justify-center px-4 py-5 md:container md:mx-auto">
@@ -47,7 +51,7 @@ const Board = () => {
           </Link>
         </div>):(<></>)}
         <div className="grid grid-flow-row grid-cols-4 justify-items-center gap-6">
-          {boardData.map(item => (
+          {board.map(item => (
             <div
               key={item.id}
               className="!z-5 shadow-3xl shadow-shadow-500 3xl:p-![18px] undefined relative flex w-full max-w-[300px] flex-col rounded-[20px] bg-white bg-clip-border !p-4"
@@ -67,11 +71,11 @@ const Board = () => {
                     <div className="mb-2">
                       <p className="text-navy-700 text-lg font-bold">{item.title}</p>
                       <p className="mt-1 text-sm font-medium text-gray-600 md:mt-2">
-                        By {item.owner}
+                        By {item.fontGenerator}
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center justify-between md:items-center lg:justify-between ">
+                  {/* <div className="flex items-center justify-between md:items-center lg:justify-between ">
                     <div className="flex">
                       <Rating>
                         <Rating.Star />
@@ -84,7 +88,7 @@ const Board = () => {
                         </p>
                       </Rating>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </Link>
             </div>
