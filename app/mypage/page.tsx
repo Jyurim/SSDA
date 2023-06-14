@@ -5,42 +5,46 @@ import Menu from "./Menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChessPawn } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
-import { Rating } from "flowbite-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { noAuth } from "@libs/myAlert";
+import Link from 'next/link';
 
-const boardData = [
-  {
-    id: 1,
-    title: "Abstract Colors",
-    owner: "Esthera Jackson",
-    image:
-      "https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png",
-    rating: 4.5,
-  },
-  {
-    id: 2,
-    title: "Two Title",
-    owner: "홍길동",
-    image:
-      "https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png",
-    rating: 4.5,
-  },
-  {
-    id: 3,
-    title: "Three Shit",
-    owner: "재익 최",
-    image:
-      "https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png",
-    rating: 4.5,
-  },
-];
+export interface IDetailInfo {
+  id: number;
+  title: string;
+  fontName: string;
+  fontGenerator: string;
+  imageFile: string;
+}
 
 const Home = () => {
   const { data: session } = useSession();
   const router = useRouter();
+  const [board, setBoard] = useState<IDetailInfo[]>([]);
+ 
+  const getBoard = async () => {
+      const response = await fetch(`http://127.0.0.1:8080/api/board/`, {
+        headers: {
+          Authorization: `Bearer ${session?.user?.accessToken}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET",
+          "Access-Control-Allow-Headers": "*",
+        },
+      });
+      console.log("response",response)
+      
+      if (response.ok) {
+        const data = await response.json();
+        setBoard(data);
+      }
+  };
+
+  useEffect(() => {
+    if (session?.user.accessToken !== null) getBoard();
+  }, [session]);
 
   useEffect(() => {
     if (session === null) {
@@ -61,7 +65,7 @@ const Home = () => {
           </div>
           <div className="w-full">
             <div className="px-3 py-2">
-              <div className="rounded-lg border-2 border-dashed border-gray-200 p-4 dark:border-gray-700">
+              <div className="rounded-lg border-2 border-dashed border-gray-200 p-4 dark:border-gray-700 min-h-screen">
                 <div className="mb-2 grid grid-cols-2 gap-4">
                   <div className="rounded-lg bg-white p-4">
                     <div>
@@ -71,6 +75,24 @@ const Home = () => {
                       />
                       내 계정
                     </div>
+                    <div className='rounded-lg bg-white p-4'>
+                      <div>
+                        아이디
+                      <p className="text-sm font-medium text-gray-600 p-2">
+                        {session?.user.username}
+                      </p>
+                      </div>
+                      
+                      이메일
+                      <p className="text-sm font-medium text-gray-600 md:mt-2">
+                        {session?.user.email}
+                      </p>
+                    </div>
+                    <Link href="/mypage/userCheck">
+                      <button className="mt-2 text-sm font-medium text-gray-600 md:mt-2">
+                        개인정보 수정
+                      </button>
+                    </Link>
                   </div>
                   <div className="rounded-lg bg-white p-4">
                     <div>
@@ -92,15 +114,16 @@ const Home = () => {
                   </div>
 
                   <div className="mb-4 grid grid-cols-4 gap-4 p-4">
-                    {boardData.map(item => (
+                    {board.filter((post) => post.fontGenerator===session?.user.username).map(item => (
                       <div
                         key={item.id}
                         className="!z-5 shadow-3xl shadow-shadow-500 3xl:p-![18px] undefined relative flex w-full max-w-[300px] flex-col rounded-[20px] border-2 border-gray-200 bg-white bg-clip-border !p-4 dark:border-gray-700"
                       >
+                        <Link href={`/board/post/${item.id}`}>
                         <div className="h-full w-full">
                           <div className="relative w-full">
                             <Image
-                              src={item.image}
+                              src={item.imageFile}
                               className="3xl:h-full 3xl:w-full mb-3 h-full w-full rounded-xl"
                               alt=""
                               width={300}
@@ -111,36 +134,15 @@ const Home = () => {
                             <div className="mb-2">
                               <p className="text-navy-700 text-lg font-bold"> {item.title} </p>
                               <p className="mt-1 text-sm font-medium text-gray-600 md:mt-2">
-                                By {item.owner}
+                                By. {item.fontGenerator}
                               </p>
                             </div>
                           </div>
-                          <div className="flex items-center justify-between md:items-center lg:justify-between ">
-                            <div className="flex items-center justify-between md:items-center lg:justify-between ">
-                              <div className="flex">
-                                <Rating>
-                                  <Rating.Star />
-                                  <Rating.Star />
-                                  <Rating.Star />
-                                  <Rating.Star />
-                                  <Rating.Star filled={false} />
-                                  {/* <p className="ml-2 text-sm font-medium text-gray-500 dark:text-gray-400">
-                                    4.95 out of 5
-                                  </p> */}
-                                </Rating>
-                              </div>
-                            </div>
-                          </div>
                         </div>
+                        </Link>
                       </div>
                     ))}
                   </div>
-                </div>
-                <div className="mb-4 flex h-48 items-center justify-center rounded bg-gray-50 dark:bg-gray-800">
-                  <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-                </div>
-                <div className="mb-4 flex h-48 items-center justify-center rounded bg-gray-50 dark:bg-gray-800">
-                  <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
                 </div>
               </div>
             </div>

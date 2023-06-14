@@ -1,6 +1,9 @@
 "use client";
 import Menu from "../Menu";
 import { Formik } from "formik";
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { useEffect } from 'react';
 import * as Yup from "yup";
 
 const UserCheckSchema = Yup.object().shape({
@@ -8,6 +11,14 @@ const UserCheckSchema = Yup.object().shape({
 });
 
 const UserCheck = () => {
+  const {data: session} = useSession();
+
+  const getUser = () => {
+    if(session){
+      return session.user;
+    }
+  }
+
   return (
     <div className="flex">
       <div className="">
@@ -55,15 +66,27 @@ const UserCheck = () => {
                                   </div>
                                 ) : null}
                               </div>
-
+                              {formik.values.password ? (
+                                <Link href="/mypage/user">
+                                <div className="text-center lg:text-left">
+                                  <button
+                                    type="submit"
+                                    className="hover:bg-blue-600-600 focus:bg-blue-600-600 active:bg-blue-600-700 inline-block rounded bg-blue-600 px-7 pt-3 pb-2.5 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]"
+                                  >
+                                    확인
+                                  </button>
+                                </div>
+                                </Link>
+                              ):(
                               <div className="text-center lg:text-left">
-                                <button
-                                  type="submit"
-                                  className="hover:bg-blue-600-600 focus:bg-blue-600-600 active:bg-blue-600-700 inline-block rounded bg-blue-600 px-7 pt-3 pb-2.5 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]"
-                                >
-                                  확인
-                                </button>
-                              </div>
+                              <button
+                                type="submit"
+                                className="hover:bg-blue-600-600 focus:bg-blue-600-600 active:bg-blue-600-700 inline-block rounded bg-blue-600 px-7 pt-3 pb-2.5 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]"
+                              >
+                                확인
+                              </button>
+                            </div>)}
+                              
                             </form>
                           )}
                         </Formik>
