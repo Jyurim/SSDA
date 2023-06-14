@@ -1,6 +1,6 @@
 "use client";
 
-import { ErrorWithMsgRouter, SuccessWithMsgRouter } from "@libs/myAlert";
+import { ErrorWithMsg, ErrorWithMsgRouter, SuccessWithMsgRouter } from "@libs/myAlert";
 import { Button } from "flowbite-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -50,6 +50,7 @@ const ConfirmEmailPage = () => {
         token,
       }),
     })
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .then(_ => {
         SuccessWithMsgRouter(
           "인증 완료",
@@ -59,7 +60,7 @@ const ConfirmEmailPage = () => {
         );
       })
       .catch(err => {
-        console.log(err);
+        ErrorWithMsg("인증 실패", "이메일 인증에 실패하였습니다.\n다시 시도해주세요.\n" + err);
       });
   };
 
