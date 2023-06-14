@@ -1,7 +1,7 @@
 import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+const API = process.env.SSDA_API ?? "https://api.ssda.dawoony.com";
 
 export const authOptions: AuthOptions = {
   // Configure one or more authentication providers
@@ -20,7 +20,7 @@ export const authOptions: AuthOptions = {
       async authorize(credentials, req) {
         // Add logic here to look up the user from the credentials supplied
 
-        const res = await fetch(BASE_URL + "/api/authenticate", {
+        const res = await fetch(`${API}/api/authenticate`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -55,6 +55,7 @@ export const authOptions: AuthOptions = {
   },
   pages: {
     signIn: "/user/login",
+    error: "/user/login",
   },
 };
 export default NextAuth(authOptions);

@@ -18,6 +18,9 @@ module.exports = {
         "3/4": "75vh",
         full: "100vh",
       },
+      flex: {
+        1.4: "0 0 1.5rem",
+      },
     },
   },
 };
