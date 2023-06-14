@@ -5,50 +5,52 @@ import Menu from "./Menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChessPawn } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
-import { Rating } from "flowbite-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { noAuth } from "@libs/myAlert";
 import Link from 'next/link';
 
-const boardData = [
-  {
-    id: 1,
-    title: "Abstract Colors",
-    owner: "ur",
-    image:
-      "https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png",
-    rating: 4.5,
-  },
-  {
-    id: 2,
-    title: "Two Title",
-    owner: "홍길동",
-    image:
-      "https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png",
-    rating: 4.5,
-  },
-  {
-    id: 3,
-    title: "Three Shit",
-    owner: "재익 최",
-    image:
-      "https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png",
-    rating: 4.5,
-  },
-];
+export interface IDetailInfo {
+  id: number;
+  title: string;
+  fontName: string;
+  fontGenerator: string;
+  imageFile: string;
+}
 
 const Home = () => {
   const { data: session } = useSession();
   const router = useRouter();
-  const user = useState();
+  const [board, setBoard] = useState<IDetailInfo[]>([]);
+ 
+  const getBoard = async () => {
+      const response = await fetch(`http://127.0.0.1:8080/api/board/`, {
+        headers: {
+          Authorization: `Bearer ${session?.user?.accessToken}`,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET",
+          "Access-Control-Allow-Headers": "*",
+        },
+      });
+      console.log("response",response)
+      
+      if (response.ok) {
+        const data = await response.json();
+        setBoard(data);
+      }
+  };
+
+  useEffect(() => {
+    if (session?.user.accessToken !== null) getBoard();
+  }, [session]);
+
   useEffect(() => {
     if (!session) {
       noAuth(router);
     }
   }, []);
-
 
   return (
     <>
@@ -112,7 +114,7 @@ const Home = () => {
                   </div>
 
                   <div className="mb-4 grid grid-cols-4 gap-4 p-4">
-                    {boardData.filter((post) => post.owner===session?.user.username).map(item => (
+                    {board.filter((post) => post.fontGenerator===session?.user.username).map(item => (
                       <div
                         key={item.id}
                         className="!z-5 shadow-3xl shadow-shadow-500 3xl:p-![18px] undefined relative flex w-full max-w-[300px] flex-col rounded-[20px] border-2 border-gray-200 bg-white bg-clip-border !p-4 dark:border-gray-700"
@@ -121,7 +123,7 @@ const Home = () => {
                         <div className="h-full w-full">
                           <div className="relative w-full">
                             <Image
-                              src={item.image}
+                              src={item.imageFile}
                               className="3xl:h-full 3xl:w-full mb-3 h-full w-full rounded-xl"
                               alt=""
                               width={300}
@@ -132,24 +134,8 @@ const Home = () => {
                             <div className="mb-2">
                               <p className="text-navy-700 text-lg font-bold"> {item.title} </p>
                               <p className="mt-1 text-sm font-medium text-gray-600 md:mt-2">
-                                By. {item.owner}
+                                By. {item.fontGenerator}
                               </p>
-                            </div>
-                          </div>
-                          <div className="flex items-center justify-between md:items-center lg:justify-between ">
-                            <div className="flex items-center justify-between md:items-center lg:justify-between ">
-                              <div className="flex">
-                                <Rating>
-                                  <Rating.Star />
-                                  <Rating.Star />
-                                  <Rating.Star />
-                                  <Rating.Star />
-                                  <Rating.Star filled={false} />
-                                  {/* <p className="ml-2 text-sm font-medium text-gray-500 dark:text-gray-400">
-                                    4.95 out of 5
-                                  </p> */}
-                                </Rating>
-                              </div>
                             </div>
                           </div>
                         </div>
