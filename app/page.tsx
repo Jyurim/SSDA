@@ -102,7 +102,7 @@ export default function Home() {
                   <div className="flex-grow pl-4">
                     <h2 className="font-medium title-font text-sm text-gray-900 mb-1 tracking-wider">STEP 3</h2>
                     <p className="leading-relaxed">
-                      그리기 버튼을 누르면 4X8 격자가 보입니다</p>
+                      그리기 버튼을 누르면 4X7 그리드가 보입니다</p>
                   </div>
                 </div>
                 <div className="flex relative pb-12">
@@ -126,7 +126,7 @@ export default function Home() {
                   <div className="flex-grow pl-4">
                     <h2 className="font-medium title-font text-sm text-gray-900 mb-1 tracking-wider">STEP 4</h2>
                     <p className="leading-relaxed">
-                      격자에 있는 28개의 글자에 해당하는 손글씨를 입력하면 나만의 손글씨가 생성됩니다!
+                      28개 글자에 해당하는 손글씨를 입력하면 나만의 손글씨가 자동으로 생성됩니다!
                     </p>
                   </div>
                 </div>
