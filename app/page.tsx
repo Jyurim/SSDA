@@ -16,7 +16,7 @@ export default function Home() {
                   단 하나, 그대만의 글씨로.
                 </h1>
                 <p className="mb-6 max-w-2xl font-light text-gray-200 md:text-lg lg:mb-8 lg:text-xl">
-                  ICreativity is the fuel that ignites innovation and sets the path for extraordinary accomplishments.
+                  Creativity is the fuel that ignites innovation and sets the path for extraordinary accomplishments.
                 </p>
                 <Link href="/user/signup">
                   <button className="inline-flex items-center justify-center rounded bg-blue-600 px-5 py-3 text-center text-base font-bold text-white hover:bg-blue-700">
