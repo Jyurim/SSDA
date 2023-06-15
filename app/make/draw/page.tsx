@@ -4,20 +4,29 @@ import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { noAuth } from "@libs/myAlert";
+import Head from "next/head";
+import Loading from "@components/Loading";
 
 const NoSSRComponent = dynamic(() => import("./Konva"), {
   ssr: false,
+  loading: () => <Loading />,
 });
 
 export default function DrawPage() {
   const { data: session } = useSession();
   const router = useRouter();
-
   useEffect(() => {
-    if (!session) {
+    if (session === null) {
       noAuth(router);
     }
-  }, []);
+  }, [router, session]);
 
-  return <NoSSRComponent />;
+  return (
+    <>
+      <Head>
+        <meta name="viewport" content="user-scalable=no" />
+      </Head>
+      <NoSSRComponent token={session?.user.accessToken} />
+    </>
+  );
 }

@@ -1,11 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState, useRef, FunctionComponent, useEffect } from "react";
 import { Stage, Layer, Line, Text } from "react-konva";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Button, Modal, Label, TextInput } from "flowbite-react";
 import { ErrorWithMsg, SuccessWithMsgRouter } from "@libs/myAlert";
+import { useScrollBlock } from "@libs/hooks/useScrollBlock";
+import { useMultiTouchBlock } from "@libs/hooks/useMultiTouchBlock";
+import Konva from "konva";
+
+const API = process.env.SSDA_API ?? "https://api.ssda.dawoony.com";
 
 interface ILine {
   tool: string;
@@ -21,48 +26,57 @@ const words = [
   ["가", "귓", "깩", "낐", "냒", "댕", "댻"],
   ["땾", "떤", "랯", "렍", "멐", "멶", "벹"],
   ["볟", "뽈", "셮", "솱", "쇎", "쏗", "욃"],
-  ["죬", "쭕", "퀧", "튐", "퓹", "흢", "챫"],
+  ["죬", "쭕", "퀧", "튐", "퓹", "흢", "챮"],
 ];
 
-const Konva: FunctionComponent = () => {
-  const { data: session } = useSession();
+type Props = {
+  token: string | undefined;
+};
+
+const KonvaComponent: FunctionComponent<Props> = ({ token }: { token: string | undefined }) => {
   const router = useRouter();
+  const [blockScroll, allowScroll] = useScrollBlock();
+  const [blockMultiTouch] = useMultiTouchBlock();
   const [tool, setTool] = useState("pen");
   const [lines, setLines] = useState([] as ILine[]);
   const [history, setHistory] = useState([] as ILine[]);
   const [size, setSize] = useState({
-    stageWidth: window.innerWidth - 80,
-    stageHeight: ((window.innerWidth - 80) / 7) * 4,
+    stageWidth: window.innerWidth - 128,
+    stageHeight: ((window.innerWidth - 128) / 7) * 4,
   } as ISize);
   const [modalReset, setModalReset] = useState(false);
   const [modalCompl, setModalCompl] = useState(false);
   const [fontName, setFontName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const isDrawing = useRef(false);
-  const stageRef = useRef(null);
-  const layerRef = useRef(null);
+  const stageRef = useRef<Konva.Stage>(null);
+  const layerRef = useRef<Konva.Layer>(null);
   useEffect(() => {
     const handleResize = () => {
       setSize({
-        stageWidth: window.innerWidth - 80,
-        stageHeight: ((window.innerWidth - 80) / 7) * 4,
+        stageWidth: window.innerWidth - 128,
+        stageHeight: ((window.innerWidth - 128) / 7) * 4,
       });
     };
     window.addEventListener("resize", handleResize);
+    blockMultiTouch();
     return () => {
+      blockMultiTouch();
       window.removeEventListener("resize", handleResize);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const borderColor = "black";
 
-  const handleMouseDown = e => {
+  const handleMouseDown = (e: any) => {
+    blockScroll();
     isDrawing.current = true;
     const pos = e.target.getStage().getPointerPosition();
     setLines([...lines, { tool, points: [pos.x, pos.y] }]);
     setHistory([...lines, { tool, points: [pos.x, pos.y] }]);
   };
 
-  const handleMouseMove = e => {
+  const handleMouseMove = (e: any) => {
     // no drawing - skipping
     if (!isDrawing.current) {
       return;
@@ -82,6 +96,7 @@ const Konva: FunctionComponent = () => {
 
   const handleMouseUp = () => {
     isDrawing.current = false;
+    allowScroll();
   };
 
   const handleUndo = () => {
@@ -105,6 +120,7 @@ const Konva: FunctionComponent = () => {
   const drawLine = (x1: number, y1: number, x2: number, y2: number) => {
     return (
       <Line
+        key={x1.toString() + y1.toString() + x2.toString() + y2.toString()}
         points={[x1, y1, x2, y2]}
         stroke="black"
         strokeWidth={1}
@@ -118,39 +134,44 @@ const Konva: FunctionComponent = () => {
   const CreateCell = () => {
     const result = [];
     const stage = stageRef.current?.getStage();
-    const gridSize = stage.width() / 7;
+    if (stage) {
+      const gridSize = stage?.width() / 7;
 
-    for (let i = 0; i < 7; i++) {
-      const x = i * gridSize;
-      result.push(drawLine(x, 0, x, stage.height()));
-    }
+      for (let i = 0; i < 7; i++) {
+        const x = i * gridSize;
+        result.push(drawLine(x, 0, x, stage.height()));
+      }
 
-    for (let j = 0; j < 4; j++) {
-      const y = j * gridSize;
-      result.push(drawLine(0, y, stage.width(), y));
+      for (let j = 0; j < 4; j++) {
+        const y = j * gridSize;
+        result.push(drawLine(0, y, stage.width(), y));
+      }
+      return result;
     }
-    return result;
   };
 
   const DrawText = () => {
     const stage = stageRef.current?.getStage();
-    const gridSize = stage.width() / 7;
-    const result = [];
-    for (let i = 0; i < 7; i++) {
-      for (let j = 0; j < 4; j++) {
-        result.push(
-          <Text
-            x={i * gridSize + 3}
-            y={j * gridSize + 3}
-            text={words[j][i]}
-            align="center"
-            verticalAlign="middle"
-            fontSize={gridSize / 6}
-          />,
-        );
+    if (stage) {
+      const gridSize = stage.width() / 7;
+      const result = [];
+      for (let i = 0; i < 7; i++) {
+        for (let j = 0; j < 4; j++) {
+          result.push(
+            <Text
+              key={i.toString() + j.toString()}
+              x={i * gridSize + 3}
+              y={j * gridSize + 3}
+              text={words[j][i]}
+              align="center"
+              verticalAlign="middle"
+              fontSize={gridSize / 6}
+            />,
+          );
+        }
       }
+      return result;
     }
-    return result;
   };
 
   const onCloseReset = () => {
@@ -163,12 +184,17 @@ const Konva: FunctionComponent = () => {
   const handleCreate = async () => {
     setIsLoading(true);
     const canvasUrl = layerRef.current?.toDataURL().split(";");
+    if (!canvasUrl) {
+      setIsLoading(false);
+      ErrorWithMsg("이미지 저장 실패", "이미지 저장에 실패하였습니다");
+      return;
+    }
     const contentType = canvasUrl[0].split(":")[1];
     const imageBase64 = canvasUrl[1].split(",")[1];
-    await fetch("https://api.ssda.dawoony.com/api/make/draw", {
+    await fetch(`${API}/api/make/draw`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${session?.user?.token}`,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "POST",
@@ -186,14 +212,15 @@ const Konva: FunctionComponent = () => {
         }
         SuccessWithMsgRouter(
           "이미지 저장 완료!!",
-          "이미지 저장이 완료되었습니다\n생성이 완료되면 메일로 알려드릴게요!",
+          "이미지 저장이 완료되었습니다.\n생성이 완료되면 메일로 알려드릴게요!",
           router,
           "/board",
         );
         setIsLoading(false);
       })
       .catch(err => {
-        ErrorWithMsg("이미지 저장 실패", "이미지 저장에 실패했습니다" + err);
+        ErrorWithMsg("이미지 저장 실패", "이미지 저장에 실패했습니다." + err);
+        setIsLoading(false);
       });
   };
 
@@ -265,6 +292,7 @@ const Konva: FunctionComponent = () => {
 
   return (
     <div className="flex flex-col items-center justify-center">
+      <h3 className="text-2xl">칸에 맞게 화면에 보이는 글자를 따라 적어주세요.</h3>
       <Stage
         width={size.stageWidth}
         height={size.stageHeight}
@@ -274,25 +302,11 @@ const Konva: FunctionComponent = () => {
         onTouchStart={handleMouseDown}
         onTouchMove={handleMouseMove}
         onTouchEnd={handleMouseUp}
-        className="p-10"
+        className="px-16 pb-8 pt-6"
         ref={stageRef}
       >
         <Layer>
-          <DrawText />
-        </Layer>
-        <Layer ref={layerRef}>
-          {lines.map((line, i) => (
-            <Line
-              key={i}
-              points={line.points}
-              stroke="black"
-              strokeWidth={3}
-              tension={0.5}
-              lineCap="round"
-              lineJoin="round"
-              globalCompositeOperation={line.tool === "eraser" ? "destination-out" : "source-over"}
-            />
-          ))}
+          {DrawText()}
           <Line
             points={[0, 0, size.stageWidth, 0]}
             stroke={borderColor}
@@ -325,7 +339,21 @@ const Konva: FunctionComponent = () => {
             lineCap="round"
             lineJoin="round"
           />
-          <CreateCell />
+          {CreateCell()}
+        </Layer>
+        <Layer ref={layerRef}>
+          {lines.map((line, i) => (
+            <Line
+              key={i}
+              points={line.points}
+              stroke="black"
+              strokeWidth={3}
+              tension={0.5}
+              lineCap="round"
+              lineJoin="round"
+              globalCompositeOperation={line.tool === "eraser" ? "destination-out" : "source-over"}
+            />
+          ))}
         </Layer>
       </Stage>
       <div className="flex gap-20">
@@ -387,4 +415,4 @@ const Konva: FunctionComponent = () => {
   );
 };
 
-export default Konva;
+export default KonvaComponent;

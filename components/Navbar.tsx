@@ -35,7 +35,7 @@ const Navbar = () => {
                 <ul className="absolute hidden pt-1 text-center group-hover:block">
                   <li className="">
                     <Link
-                      className="whitespace-no-wrap block rounded-t bg-white py-2 px-4 transition duration-200 hover:bg-yellow-400 hover:text-white"
+                      className="whitespace-no-wrap block rounded-t border border-black bg-white py-2 px-2 text-black transition duration-200  hover:text-yellow-400"
                       href="make/draw"
                     >
                       그리기
@@ -43,7 +43,7 @@ const Navbar = () => {
                   </li>
                   <li className="">
                     <Link
-                      className="whitespace-no-wrap block rounded-b bg-white py-2 px-4 transition duration-200 hover:bg-yellow-400 hover:text-white"
+                      className="whitespace-no-wrap block rounded-b border-r border-b border-l border-black bg-white py-2 px-2 text-black transition duration-200 hover:text-yellow-400"
                       href="make/file"
                     >
                       파일

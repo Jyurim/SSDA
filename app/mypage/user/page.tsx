@@ -3,6 +3,10 @@
 import Menu from "../Menu";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { noAuth } from "@libs/myAlert";
 
 const MyAccountSchema = Yup.object().shape({
   username: Yup.string().required("필수 정보입니다."),
@@ -14,6 +18,14 @@ const MyAccountSchema = Yup.object().shape({
 });
 
 const User = () => {
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!session) {
+      noAuth(router);
+    }
+  }, []);
   return (
     <section className="h-screen">
       <div className="flex">
