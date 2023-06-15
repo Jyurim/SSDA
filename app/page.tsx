@@ -1,4 +1,6 @@
 import Image from "next/image";
+import img from "../public/img.png";
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -16,9 +18,11 @@ export default function Home() {
                 <p className="mb-6 max-w-2xl font-light text-gray-200 md:text-lg lg:mb-8 lg:text-xl">
                   Its been a long day without you my friend. and i will tell you all about it when i see you again.
                 </p>
-                <button className="inline-flex items-center justify-center rounded bg-blue-600 px-5 py-3 text-center text-base font-bold text-white hover:bg-blue-700">
-                  Try For Free!
-                </button>
+                <Link href="/user/signup">
+                  <button className="inline-flex items-center justify-center rounded bg-blue-600 px-5 py-3 text-center text-base font-bold text-white hover:bg-blue-700">
+                    Try For Free!
+                  </button>
+                </Link>
               </div>
               <div className="hidden lg:col-span-5 lg:mt-0 lg:flex"></div>
             </div>
@@ -147,9 +151,9 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <img
+              <Image
                   className="lg:w-1/2 md:w-1/2 object-cover object-center rounded-lg md:mt-0 mt-12"
-                  src="/img.png"
+                  src={img}
                   alt="step"
               />
             </div>
